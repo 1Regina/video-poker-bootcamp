@@ -15,13 +15,13 @@
 
 // console.log(`hand`, newHand())
 
-// Create array for cards in Hand
+// GLOBAL VARIABLES
 let hand = [];
-// Create Object as tally
 var cardNameTally = {};
 var cardSuitTally = {};
 let counterDuplicates = {};
 
+// HELPER FUNCTIONS
 const makeDeck = () => {
   // Initialise an empty deck array
   const newDeck = [];
@@ -128,11 +128,14 @@ const createHand = () => {
   return hand;
 };
 
-// WINNING CONDITIONS
-// check for duplicates of name
-// Loop over hand
+/**
+ * A function that summarizes the hand for duplicates
+ * @param  hand {array} array of cards in hand
+ * @return {object} which summarize the number of pairs and triples in hand
+ */
 const checkDuplicateNames = (hand) => {
   let sortHand = hand.sort();
+  // Loop over hand
   for (let i = 0; i < sortHand.length; i += 1) {
     let cardName = sortHand[i].name;
     // If we have seen the card name before, increment its count
@@ -149,9 +152,10 @@ const checkDuplicateNames = (hand) => {
       `There are ${cardNameTally[cardName]}: ${cardName}s in the hand`
     );
   }
+  // initialise the count of pairs and triple in hand
   let counterPairs = 0;
   let counterTriples = 0;
-
+  let counterQuadruples = 0;
   for (const key in cardNameTally) {
     if (cardNameTally[key] === 2) {
       counterPairs += 1;
@@ -159,17 +163,25 @@ const checkDuplicateNames = (hand) => {
     } else if (cardNameTally[key] === 3) {
       counterTriples += 1;
       counterDuplicates['triples'] = counterTriples;
+    } else if (cardNameTally[key] === 4) {
+      counterQuadruples += 1;
+      counterDuplicates['quadruples'] = counterQuadruples;
     }
   }
   console.log(`There are ${counterPairs} pairs of cards name in hand`);
   console.log(`There are ${counterTriples} triples of cards name in hand`);
+  console.log(`There are ${counterQuadruples} full house in hand`);
   return counterDuplicates;
 };
 
-// const checkOnePair = (hand) => {
-//   let summary =  checkDuplicateNames(hand)
-//   if ()
-// }
+// WINNING CONDITIONS
+// check for one pair scenario
+const isOnePair = (hand) => {
+  let summary = checkDuplicateNames(hand);
+  if (summary['pars'] === 1) {
+    return true;
+  }
+};
 // check for all same suit
 // Loop over hand
 const checkFlush = (hand) => {
