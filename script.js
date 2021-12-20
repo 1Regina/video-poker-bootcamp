@@ -14,12 +14,14 @@
 // console.log(startCredits);
 
 // console.log(`hand`, newHand())
+// score: https://www.pokernews.com/img/rules/poker-hand-rankings_d.png
 
 // GLOBAL VARIABLES
 let hand = [];
 var cardNameTally = {};
 var cardSuitTally = {};
 let counterDuplicates = {};
+let outcome = {};
 let royalFlush = false;
 let straightFlush = false;
 let fourOfAKind = false;
@@ -35,9 +37,9 @@ let onePair = false;
 const makeDeck = () => {
   // Initialise an empty deck array
   const newDeck = [];
-  const symbol = ['♥', '♦', '♣', '♠'];
+  const symbol = ['♦', '♣', '♥', '♠'];
   // Initialise an array of the 4 suits in our deck. We will loop over this array.
-  const suits = ['hearts', 'diamonds', 'clubs', 'spades'];
+  const suits = ['diamonds', 'clubs', 'hearts', 'spades'];
 
   // Loop over the suits array
   for (let suitIndex = 0; suitIndex < suits.length; suitIndex += 1) {
@@ -143,11 +145,10 @@ const createHand = () => {
  * @param  hand {array} array of cards in hand
  * @return {object} which summarize the number of pairs and triples in hand
  */
-const checkDuplicateNames = (hand) => {
-  let sortHand = hand.sort();
+const hasDuplicateNames = (hand) => {
   // Loop over hand
-  for (let i = 0; i < sortHand.length; i += 1) {
-    let cardName = sortHand[i].name;
+  for (let i = 0; i < hand.length; i += 1) {
+    let cardName = hand[i].name;
     // If we have seen the card name before, increment its count
     if (cardName in cardNameTally) {
       cardNameTally[cardName] += 1;
@@ -185,24 +186,16 @@ const checkDuplicateNames = (hand) => {
 };
 
 // WINNING CONDITIONS
-// check for one pair scenario
-// const isOnePair = (hand) => {
-//   let summary = checkDuplicateNames(hand);
-//   if (summary['pars'] === 1) {
-//     return true;
-//   }
-// };
 
 /**
- * A function that check hand for same suit
+ * A function that check hand for same suit (can be simplified)
  * @param  hand {array} array of cards in hand
  * @return {bool} true if the hand is of the same suit
  */
-const checkFlush = (hand) => {
-  let sortHand = hand.sort();
+const hasFlush = (hand) => {
   // Loop over hand
-  for (let i = 0; i < sortHand.length; i += 1) {
-    let cardSuit = sortHand[i].suit;
+  for (let i = 0; i < hand.length; i += 1) {
+    let cardSuit = hand[i].suit;
     // If we have seen the card name before, increment its count
     if (cardSuit in cardSuitTally) {
       cardSuitTally[cardSuit] += 1;
@@ -219,10 +212,11 @@ const checkFlush = (hand) => {
   }
   let counterFlush = 0;
   for (const key in cardSuitTally) {
-    if (cardSuitTally[key] === 5) {
+    // only 1 suit exists
+    if (Object.keys(cardSuitTally).length === 1) {
       counterFlush += 1;
       // console.log(`There a flush of ${cardSuitTally[key]} in hand`);
-      console.log(`There a flush of ${sortHand[0].suit} in hand`);
+      console.log(`There a flush of ${hand[0].suit} in hand`);
       console.log(`counterFlush`, counterFlush);
       flush = true;
     } else {
@@ -232,16 +226,21 @@ const checkFlush = (hand) => {
   return flush;
 };
 
+// hand.sort(function (a, b) {
+//     return a.city.localeCompare(b.city) || b.price - a.price;
+// });
+
 /**
  * A function that check if every card is sequential
  * @param  hand {array} array of cards in hand
  * @return {bool} true if the cards are in sequential order
  */
-const checkStraight = (hand) => {
-  let sortHand = hand.sort();
+const hasStraight = (hand) => {
+  // sort the hand in order to compare sequence
+  hand.sort((a, b) => a.rank - b.rank);
   // Loop over hand
-  for (let i = 0; i < sortHand.length; i += 1) {
-    if (sortHand[i + 1].rank - sortHand[i].rank === 1) {
+  for (let i = 0; i < hand.length; i += 1) {
+    if (hand[i + 1].rank - hand[i].rank === 1) {
       straight = true;
     } else {
       straight = false;
@@ -249,3 +248,120 @@ const checkStraight = (hand) => {
     return straight;
   }
 };
+
+/**
+ * A function that check for royal flush
+ * @param  hand {array} array of cards in hand
+ * @return outcome {object} which if royal flush condition meeets
+ */
+const hasRoyalFlush = (hand) => {
+  hand.sort((a, b) => a.rank - b.rank);
+  // royal flush
+  if (
+    hasFlush(hand) === true &&
+    hand[0].name === 'ace' &&
+    hand[4].name === 'king'
+  ) {
+    let straightCounter = 0;
+    for (let i = 2; i < 5; i += 1) {
+      if (hand[i].rank - hand[i - 1].rank === 1) {
+        straightCounter += 1;
+
+        if (straightCounter === 3) {
+          royalFlush = true;
+          outcome['royalFlush'] = 1;
+        } else {
+          royalFlush = false;
+        }
+        console.log(`royalFlush`, royalFlush);
+      }
+    }
+  }
+  return royalFlush;
+};
+
+/**
+ * A function that check for straight flush
+ * @param  hand {array} array of cards in hand
+ * @return outcome {object} which if straight flush condition meeets
+ */
+const hasStraightFlush = (hand) => {
+  hand.sort((a, b) => a.rank - b.rank);
+  if (
+    hasFlush(hand) === true &&
+    hasStraight(hand) === true &&
+    royalFlush(hand) === false
+  ) {
+    straightFlush = true;
+    outcome['straightFlush'] = 1;
+    console.log(`straightFlush`, straightFlush);
+  } else {
+    straightFlush = false;
+  }
+  return straightFlush;
+};
+
+/**
+ * A function that check for 4 of a kind
+ * @param  hand {array} array of cards in hand
+ * @return outcome {object} which if straight flush condition meeets
+ */
+const hasFourKind = (hand) => {
+
+}
+
+/**
+ * A function that check if the hand meets any win condition
+ * @param  hand {array} array of cards in hand
+ * @return outcome {object} which condition did the hand meet
+ */
+const evaluateWin = (hand) => {
+  hand.sort((a, b) => a.rank - b.rank);
+  // royal flush
+  console.log('xxxxx', hand, hasFlush(hand));
+  if (
+    hasFlush(hand) === true &&
+    hand[0].name === 'ace' &&
+    hand[4].name === 'king'
+  ) {
+    let straightCounter = 0;
+    for (let i = 2; i < 5; i += 1) {
+      if (hand[i].rank - hand[i - 1].rank === 1) {
+        straightCounter += 1;
+
+        if (straightCounter === 3) {
+          royalFlush = true;
+          outcome['royalFlush'] = 1;
+        } else {
+          royalFlush = false;
+        }
+        console.log(`royalFlush`, royalFlush);
+      }
+    }
+  }
+  // straight flush
+  console.log(hand);
+  console.log(`hasFlush(hand)`, hasFlush(hand));
+  console.log(`hasStraight(hand)`, hasStraight(hand));
+  if (hasFlush(hand) === true && hasStraight(hand) === true) {
+    straightFlush = true;
+    outcome['straightFlush'] = 1;
+    console.log(`straightFlush`, straightFlush);
+  }
+  if (hasFlush(hand) === true) {
+    flush = true;
+    outcome['flush'] = 1;
+    console.log(`flush`, flush);
+  }
+  return outcome;
+};
+
+let straits = makeDeck().slice(15, 20);
+console.log(`straits`, straits);
+console.log(` Straight outcome`, hasStraight(straits));
+console.log(`@@@@@@@@@@@@@@@@@@@@@@@@@@@@@`);
+let royalty = makeDeck().slice(9, 13);
+royalty.push(makeDeck()[0]);
+console.log(`royalty`, royalty);
+console.log(`$$$$$$$$$$$$$$$$$$$$$$$$$$`);
+console.log(`Royal Flush outcome`, hasRoyalFlush(royalty));
