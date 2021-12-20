@@ -306,9 +306,7 @@ const hasStraightFlush = (hand) => {
  * @param  hand {array} array of cards in hand
  * @return outcome {object} which if straight flush condition meeets
  */
-const hasFourKind = (hand) => {
-
-}
+const hasFourKind = (hand) => {};
 
 /**
  * A function that check if the hand meets any win condition
@@ -354,6 +352,85 @@ const evaluateWin = (hand) => {
     console.log(`flush`, flush);
   }
   return outcome;
+};
+
+/**
+ * A function that check if it is one pair
+ * @param  hand {array} array of cards in hand
+ * @return {bool} true if hand has a pair
+ */
+const hasOnePair = (hand) => {
+  if (
+    hasDuplicateNames(hand)['pairs'] === 1 &&
+    hasDuplicateNames(hand)['triples'] === 0
+  ) {
+    return (onePair = true);
+  } else {
+    onePair = false;
+  }
+  return onePair;
+};
+
+/**
+ * A function that check if it has 2 pairs
+ * @param  hand {array} array of cards in hand
+ * @return {bool} true if hand has 2 pairs
+ */
+const hasTwoPairs = (hand) => {
+  if (hasDuplicateNames(hand)['pairs'] === 2) {
+    return (twoPair = true);
+  } else {
+    twoPair = false;
+  }
+  return twoPair;
+};
+
+/**
+ * A function that check if it is 3 of a kind
+ * @param  hand {array} array of cards in hand
+ * @return {bool} true if hand has 3 same cards
+ */
+const hasThreeOfKind = (hand) => {
+  if (
+    hasDuplicateNames(hand)['triples'] === 1 &&
+    hasDuplicateNames(hand)['pairs'] === 0
+  ) {
+    return (threeOfAKind = true);
+  } else {
+    threeOfAKind = false;
+  }
+  return threeOfAKind;
+};
+
+/**
+ * A function that check if it is 3 of a kind & a pair (full house)
+ * @param  hand {array} array of cards in hand
+ * @return {bool} true if hand has a full house
+ */
+const hasFullHouse = (hand) => {
+  if (
+    hasDuplicateNames(hand)['triples'] === 1 &&
+    hasDuplicateNames(hand)['pairs'] === 1
+  ) {
+    return (fullHouse = true);
+  } else {
+    fullHouse = false;
+  }
+  return fullHouse;
+};
+
+/**
+ * A function that check if it is 4 of a kind
+ * @param  hand {array} array of cards in hand
+ * @return {bool} true if hand has 4 of a kind
+ */
+const hasFourOfKind = (hand) => {
+  if (hasDuplicateNames(hand)['quadruples'] === 1) {
+    return (fourOfAKind = true);
+  } else {
+    fourOfAKind = false;
+  }
+  return fourOfAKind;
 };
 
 let straits = makeDeck().slice(15, 20);
