@@ -126,6 +126,7 @@ const createHand = () => {
 
 // ********************//
 //WINING CONDITIONS //
+// FLUSHES//
 /**
  * A function that check hand for same suit (can be simplified)
  * @param  hand {array} array of cards in hand
@@ -224,9 +225,213 @@ const hasStraightFlush = (hand) => {
   return straightFlush;
 };
 
+// PAIRS & SAME KIND//
+/**
+ * A function that summarizes the hand for duplicates
+ * @param  hand {array} array of cards in hand
+ * @return {object} which summarize the number of pairs and triples in hand
+ */
+const hasDuplicateNames = (hand) => {
+  cardNameTally = {};
+  // Loop over hand
+  for (let i = 0; i < hand.length; i += 1) {
+    let cardName = hand[i].name;
+
+    // If we have seen the card name before, increment its count
+    if (cardName in cardNameTally) {
+      cardNameTally[cardName] += 1;
+    }
+    // Else, initialise count of this card name to 1
+    else {
+      cardNameTally[cardName] = 1;
+    }
+  }
+  for (cardName in cardNameTally) {
+    console.log(
+      `There are ${cardNameTally[cardName]}: ${cardName}s in the hand`
+    );
+  }
+  // initialise the count of pairs and triple in hand
+  let counterPairs = 0;
+  let counterTriples = 0;
+  let counterQuadruples = 0;
+  for (const key in cardNameTally) {
+    if (cardNameTally[key] === 2) {
+      counterPairs += 1;
+      counterDuplicates['pairs'] = counterPairs;
+    } else if (cardNameTally[key] === 3) {
+      counterTriples += 1;
+      counterDuplicates['triples'] = counterTriples;
+    } else if (cardNameTally[key] === 4) {
+      counterQuadruples += 1;
+      counterDuplicates['quadruples'] = counterQuadruples;
+    }
+  }
+  console.log(`There are ${counterPairs} pairs of cards name in hand`);
+  console.log(`There are ${counterTriples} triples of cards name in hand`);
+  console.log(`There are ${counterQuadruples} full house in hand`);
+  console.log(`cardNameTally`, cardNameTally);
+  return counterDuplicates;
+};
+
+/**
+ * A function that check if it is one pair
+ * @param  hand {array} array of cards in hand
+ * @return {bool} true if hand has a pair
+ */
+const hasOnePair = (hand) => {
+  cardNameTally = {};
+  // Loop over hand
+  for (let i = 0; i < hand.length; i += 1) {
+    let cardName = hand[i].name;
+    // If we have seen the card name before, increment its count
+    if (cardName in cardNameTally) {
+      cardNameTally[cardName] += 1;
+    }
+    // Else, initialise count of this card name to 1
+    else {
+      cardNameTally[cardName] = 1;
+    }
+  }
+  // initialise the count of pairs in hand
+  let counterPairs = 0;
+  for (const key in cardNameTally) {
+    if (cardNameTally[key] === 2) {
+      counterPairs += 1;
+    }
+  }
+  if (counterPairs === 1) {
+    return (onePair = true);
+  } else {
+    onePair = false;
+  }
+  console.log(`cardNameTally`, cardNameTally);
+  return onePair;
+};
+
+/**
+ * A function that check if it has 2 pairs
+ * @param  hand {array} array of cards in hand
+ * @return {bool} true if hand has 2 pairs
+ */
+const hasTwoPairs = (hand) => {
+  cardNameTally = {};
+  // Loop over hand
+  for (let i = 0; i < hand.length; i += 1) {
+    let cardName = hand[i].name;
+    // If we have seen the card name before, increment its count
+    if (cardName in cardNameTally) {
+      cardNameTally[cardName] += 1;
+    }
+    // Else, initialise count of this card name to 1
+    else {
+      cardNameTally[cardName] = 1;
+    }
+  }
+  // initialise the count of pairs in hand
+  let counterPairs = 0;
+  for (const key in cardNameTally) {
+    if (cardNameTally[key] === 2) {
+      counterPairs += 1;
+    }
+  }
+  if (counterPairs === 2) {
+    return (twoPair = true);
+  } else {
+    twoPair = false;
+  }
+  console.log(`cardNameTally`, cardNameTally);
+  return twoPair;
+};
+
+/**
+ * A function that check if it is 3 of a kind
+ * @param  hand {array} array of cards in hand
+ * @return {bool} true if hand has 3 same cards
+ */
+const hasThreeOfKind = (hand) => {
+  cardNameTally = {};
+  // Loop over hand
+  for (let i = 0; i < hand.length; i += 1) {
+    let cardName = hand[i].name;
+    // If we have seen the card name before, increment its count
+    if (cardName in cardNameTally) {
+      cardNameTally[cardName] += 1;
+    }
+    // Else, initialise count of this card name to 1
+    else {
+      cardNameTally[cardName] = 1;
+    }
+  }
+  // initialise the count of pairs in hand
+  let counter = 0;
+  for (const key in cardNameTally) {
+    if (cardNameTally[key] === 3) {
+      counter += 1;
+    }
+  }
+  if (counter === 1) {
+    return (threeOfAKind = true);
+  } else {
+    threeOfAKind = false;
+  }
+  console.log(`cardNameTally`, cardNameTally);
+  return threeOfAKind;
+};
+
+/**
+ * A function that check if it is 3 of a kind & a pair (full house)
+ * @param  hand {array} array of cards in hand
+ * @return {bool} true if hand has a full house
+ */
+const hasFullHouse = (hand) => {
+  if (hasThreeOfKind(hand) === true && hasOnePair(hand) === true) {
+    return (fullHouse = true);
+  } else {
+    fullHouse = false;
+  }
+  return fullHouse;
+};
+
+/**
+ * A function that check if it is 4 of a kind
+ * @param  hand {array} array of cards in hand
+ * @return {bool} true if hand has 4 of a kind
+ */
+const hasFourOfKind = (hand) => {
+  cardNameTally = {};
+  // Loop over hand
+  for (let i = 0; i < hand.length; i += 1) {
+    let cardName = hand[i].name;
+    // If we have seen the card name before, increment its count
+    if (cardName in cardNameTally) {
+      cardNameTally[cardName] += 1;
+    }
+    // Else, initialise count of this card name to 1
+    else {
+      cardNameTally[cardName] = 1;
+    }
+  }
+  // initialise the count of pairs in hand
+  let counter = 0;
+  for (const key in cardNameTally) {
+    if (cardNameTally[key] === 4) {
+      counter += 1;
+    }
+  }
+  if (counter === 1) {
+    return (fourOfAKind = true);
+  } else {
+    fourOfAKind = false;
+  }
+  console.log(`cardNameTally`, cardNameTally);
+  return fourOfAKind;
+};
 
 // ********************//
 //SANDBOX TESTING //
+
+console.log(`!!!!FLUSH TESTING!!!`);
 let straits = makeDeck().slice(15, 20);
 console.log(`straits`, straits);
 let oddStraits = makeDeck().slice(17, 20);
@@ -238,11 +443,45 @@ console.log(`oddStraits: `, oddStraits);
 console.log(` Straight outcome on straits:`, hasStraight(straits)); // true
 console.log(` Straight outcome on oddStraits:`, hasStraight(oddStraits)); // true
 console.log(`@@@@@@@@@@@@@@@@@@@@@@@@@@@@@`);
-console.log(` Straight Flush outcome on straits:`, hasStraightFlush(straits));//true
-console.log(` Straight Flush on oddStraits:`, hasStraightFlush(oddStraits));// false
+console.log(` Straight Flush outcome on straits:`, hasStraightFlush(straits)); //true
+console.log(` Straight Flush on oddStraits:`, hasStraightFlush(oddStraits)); // false
 console.log(`&&&&&&&&&&&&&&&&&&&&&&&&&&&&&`);
 let royalty = makeDeck().slice(9, 13);
 royalty.push(makeDeck()[0]);
 console.log(`royalty`, royalty);
 console.log(`$$$$$$$$$$$$$$$$$$$$$$$$$$`);
-console.log(`Royal Flush outcome:`, hasRoyalFlush(royalty));//true
+console.log(`Royal Flush outcome:`, hasRoyalFlush(royalty)); //true
+
+console.log(`!!!!PAIRS & KINDS TESTING!!!`);
+let twin = makeDeck().slice(31, 35);
+twin.push(makeDeck()[47]);
+console.log(`twin`, twin);
+console.log(`OnePair outcome on twin: `, hasOnePair(twin)); // true
+
+let twinTwin = makeDeck().slice(32, 35);
+twinTwin.push(makeDeck()[6]);
+twinTwin.push(makeDeck()[47]);
+console.log(`twinTwin`, twinTwin);
+console.log(`TwoPair outcome on twinTwin: `, hasTwoPairs(twinTwin)); // true
+
+let triple = makeDeck().slice(32, 35);
+triple.push(makeDeck()[8]);
+triple.push(makeDeck()[47]);
+console.log(`triple`, triple);
+console.log(`ThreeOfAKind outcome on triple: `, hasThreeOfKind(triple)); // true
+
+let fully = makeDeck().slice(33, 35);
+fully.push(makeDeck()[7]);
+fully.push(makeDeck()[47]);
+fully.push(makeDeck()[20]);
+console.log(`fully`, fully);
+console.log(`fullHouse outcome on fully: `, hasFullHouse(fully)); // true
+
+let quadsi = makeDeck().slice(33, 35);
+quadsi.push(makeDeck()[8]);
+quadsi.push(makeDeck()[47]);
+quadsi.push(makeDeck()[21]);
+console.log(`quasi`, quadsi);
+console.log(`fourOfAKind outcome on quasi: `, hasFourOfKind(quadsi)); // true
+
+// console.log(`random test: `, hasFullHouse(quadsi)); // false
