@@ -3,8 +3,8 @@
 let hand = [];
 var cardNameTally = {};
 var cardSuitTally = {};
-let counterDuplicates = {};
-let outcome = {};
+// let counterDuplicates = {};
+// let outcome = {};
 let royalFlush = false;
 let straightFlush = false;
 let fourOfAKind = false;
@@ -485,3 +485,6 @@ console.log(`quasi`, quadsi);
 console.log(`fourOfAKind outcome on quasi: `, hasFourOfKind(quadsi)); // true
 
 // console.log(`random test: `, hasFullHouse(quadsi)); // false
+
+// ********************//
+//CALCULATE EARNINGS //
