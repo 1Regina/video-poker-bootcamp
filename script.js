@@ -20,6 +20,16 @@ let hand = [];
 var cardNameTally = {};
 var cardSuitTally = {};
 let counterDuplicates = {};
+let royalFlush = false;
+let straightFlush = false;
+let fourOfAKind = false;
+let fullHouse = false;
+let flush = false;
+let straight = false;
+let threeOfAKind = false;
+let twoPair = false;
+let onePair = false;
+// let highCard = false; unless duel
 
 // HELPER FUNCTIONS
 const makeDeck = () => {
@@ -176,16 +186,21 @@ const checkDuplicateNames = (hand) => {
 
 // WINNING CONDITIONS
 // check for one pair scenario
-const isOnePair = (hand) => {
-  let summary = checkDuplicateNames(hand);
-  if (summary['pars'] === 1) {
-    return true;
-  }
-};
-// check for all same suit
-// Loop over hand
+// const isOnePair = (hand) => {
+//   let summary = checkDuplicateNames(hand);
+//   if (summary['pars'] === 1) {
+//     return true;
+//   }
+// };
+
+/**
+ * A function that check hand for same suit
+ * @param  hand {array} array of cards in hand
+ * @return {bool} true if the hand is of the same suit
+ */
 const checkFlush = (hand) => {
   let sortHand = hand.sort();
+  // Loop over hand
   for (let i = 0; i < sortHand.length; i += 1) {
     let cardSuit = sortHand[i].suit;
     // If we have seen the card name before, increment its count
@@ -206,8 +221,31 @@ const checkFlush = (hand) => {
   for (const key in cardSuitTally) {
     if (cardSuitTally[key] === 5) {
       counterFlush += 1;
+      // console.log(`There a flush of ${cardSuitTally[key]} in hand`);
+      console.log(`There a flush of ${sortHand[0].suit} in hand`);
+      console.log(`counterFlush`, counterFlush);
+      flush = true;
+    } else {
+      flush = false;
     }
   }
-  console.log(`There a flush of ${sortHand[0].suit} in hand`);
-  return counterFlush;
+  return flush;
+};
+
+/**
+ * A function that check if every card is sequential
+ * @param  hand {array} array of cards in hand
+ * @return {bool} true if the cards are in sequential order
+ */
+const checkStraight = (hand) => {
+  let sortHand = hand.sort();
+  // Loop over hand
+  for (let i = 0; i < sortHand.length; i += 1) {
+    if (sortHand[i + 1].rank - sortHand[i].rank === 1) {
+      straight = true;
+    } else {
+      straight = false;
+    }
+    return straight;
+  }
 };
