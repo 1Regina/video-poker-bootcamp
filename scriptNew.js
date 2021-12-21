@@ -499,6 +499,7 @@ startbutton.innerText = 'start';
 startbutton.onclick = function () {
   // gamerName.value = '';
   // congrats.innerText = '';
+  
   startClick();
 };
 buttonsArea.appendChild(startbutton);
@@ -511,7 +512,7 @@ submitbutton.innerText = 'submit';
 submitbutton.onclick = function () {
   // gamerName.value = '';
   // congrats.innerText = '';
-  evaluateEarnings()
+  evaluateEarnings();
 };
 buttonsArea.appendChild(submitbutton);
 
@@ -523,7 +524,8 @@ resetbutton.innerText = 'reset';
 resetbutton.onclick = function () {
   // gamerName.value = '';
   // congrats.innerText = '';
-  document.getElementsByName('cardsContainer').innerHTML = '';
+  console.log('reset');
+  document.querySelector('#cardsTable').innerHTML = '';
 };
 buttonsArea.appendChild(resetbutton);
 
@@ -555,11 +557,11 @@ const createCard = (cardInfo) => {
 // Function to display the created card //
 let table = document.getElementById('cardsTable');
 const startClick = () => {
-  document.body.appendChild(table);
+  hand=[]
   container = document.createElement('div');
   container.classList.add('card-container');
-  container.setAttribute('name', 'cardsContainer');
-  document.body.appendChild(container);
+  container.setAttribute('id', 'cards-container');
+  table.appendChild(container);
   for (i = 0; i < 5; i++) {
     hand.push(deck.pop());
     let cardElement = createCard(hand[i]);
@@ -620,4 +622,6 @@ const evaluateEarnings = (hand) => {
   } else {
     credits -= earnings.lose;
   }
+  let displayBal = document.getElementById('wallet');
+  displayBal.innerText = credits;
 };
