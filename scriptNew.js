@@ -15,6 +15,7 @@ let threeOfAKind = false;
 let twoPair = false;
 let onePair = false;
 // let highCard = false; unless duel
+let credits = 100;
 
 // ********************//
 // HELPER FUNCTIONS //
@@ -193,10 +194,11 @@ const hasStraight = (hand) => {
 const hasRoyalFlush = (hand) => {
   hand.sort((a, b) => a.rank - b.rank);
   // royal flush
-  let key = hand[0].suit;
-  // check suit of every card in hand is same
-  isFlush = hand.every((a, _, [b]) => a[key] === b[key]);
-  if (isFlush === true && hand[0].name === 'ace' && hand[4].name === 'king') {
+  if (
+    hasFlush(hand) === true &&
+    hand[0].name === 'ace' &&
+    hand[4].name === 'king'
+  ) {
     royalFlush = true;
     // outcome['royalFlush'] = 1;
   } else {
@@ -431,60 +433,191 @@ const hasFourOfKind = (hand) => {
 // ********************//
 //SANDBOX TESTING //
 
-console.log(`!!!!FLUSH TESTING!!!`);
-let straits = makeDeck().slice(15, 20);
-console.log(`straits`, straits);
-let oddStraits = makeDeck().slice(17, 20);
-let oddStraitsA = makeDeck()[2];
-let oddStraitsA1 = makeDeck()[3];
-oddStraits.push(oddStraitsA);
-oddStraits.push(oddStraitsA1);
-console.log(`oddStraits: `, oddStraits);
-console.log(` Straight outcome on straits:`, hasStraight(straits)); // true
-console.log(` Straight outcome on oddStraits:`, hasStraight(oddStraits)); // true
-console.log(`@@@@@@@@@@@@@@@@@@@@@@@@@@@@@`);
-console.log(` Straight Flush outcome on straits:`, hasStraightFlush(straits)); //true
-console.log(` Straight Flush on oddStraits:`, hasStraightFlush(oddStraits)); // false
-console.log(`&&&&&&&&&&&&&&&&&&&&&&&&&&&&&`);
+// console.log(`!!!!FLUSH TESTING!!!`);
+// let straits = makeDeck().slice(15, 20);
+// console.log(`straits`, straits);
+// let oddStraits = makeDeck().slice(17, 20);
+// let oddStraitsA = makeDeck()[2];
+// let oddStraitsA1 = makeDeck()[3];
+// oddStraits.push(oddStraitsA);
+// oddStraits.push(oddStraitsA1);
+// console.log(`oddStraits: `, oddStraits);
+// console.log(` Straight outcome on straits:`, hasStraight(straits)); // true
+// console.log(` Straight outcome on oddStraits:`, hasStraight(oddStraits)); // true
+// console.log(`@@@@@@@@@@@@@@@@@@@@@@@@@@@@@`);
+// console.log(` Straight Flush outcome on straits:`, hasStraightFlush(straits)); //true
+// console.log(` Straight Flush on oddStraits:`, hasStraightFlush(oddStraits)); // false
+// console.log(`&&&&&&&&&&&&&&&&&&&&&&&&&&&&&`);
 let royalty = makeDeck().slice(9, 13);
 royalty.push(makeDeck()[0]);
-console.log(`royalty`, royalty);
-console.log(`$$$$$$$$$$$$$$$$$$$$$$$$$$`);
-console.log(`Royal Flush outcome:`, hasRoyalFlush(royalty)); //true
+// console.log(`royalty`, royalty);
+// console.log(`$$$$$$$$$$$$$$$$$$$$$$$$$$`);
+// console.log(`Royal Flush outcome:`, hasRoyalFlush(royalty)); //true
 
-console.log(`!!!!PAIRS & KINDS TESTING!!!`);
-let twin = makeDeck().slice(31, 35);
-twin.push(makeDeck()[47]);
-console.log(`twin`, twin);
-console.log(`OnePair outcome on twin: `, hasOnePair(twin)); // true
+// console.log(`!!!!PAIRS & KINDS TESTING!!!`);
+// let twin = makeDeck().slice(31, 35);
+// twin.push(makeDeck()[47]);
+// console.log(`twin`, twin);
+// console.log(`OnePair outcome on twin: `, hasOnePair(twin)); // true
 
-let twinTwin = makeDeck().slice(32, 35);
-twinTwin.push(makeDeck()[6]);
-twinTwin.push(makeDeck()[47]);
-console.log(`twinTwin`, twinTwin);
-console.log(`TwoPair outcome on twinTwin: `, hasTwoPairs(twinTwin)); // true
+// let twinTwin = makeDeck().slice(32, 35);
+// twinTwin.push(makeDeck()[6]);
+// twinTwin.push(makeDeck()[47]);
+// console.log(`twinTwin`, twinTwin);
+// console.log(`TwoPair outcome on twinTwin: `, hasTwoPairs(twinTwin)); // true
 
-let triple = makeDeck().slice(32, 35);
-triple.push(makeDeck()[8]);
-triple.push(makeDeck()[47]);
-console.log(`triple`, triple);
-console.log(`ThreeOfAKind outcome on triple: `, hasThreeOfKind(triple)); // true
+// let triple = makeDeck().slice(32, 35);
+// triple.push(makeDeck()[8]);
+// triple.push(makeDeck()[47]);
+// console.log(`triple`, triple);
+// console.log(`ThreeOfAKind outcome on triple: `, hasThreeOfKind(triple)); // true
 
-let fully = makeDeck().slice(33, 35);
-fully.push(makeDeck()[7]);
-fully.push(makeDeck()[47]);
-fully.push(makeDeck()[20]);
-console.log(`fully`, fully);
-console.log(`fullHouse outcome on fully: `, hasFullHouse(fully)); // true
+// let fully = makeDeck().slice(33, 35);
+// fully.push(makeDeck()[7]);
+// fully.push(makeDeck()[47]);
+// fully.push(makeDeck()[20]);
+// console.log(`fully`, fully);
+// console.log(`fullHouse outcome on fully: `, hasFullHouse(fully)); // true
 
-let quadsi = makeDeck().slice(33, 35);
-quadsi.push(makeDeck()[8]);
-quadsi.push(makeDeck()[47]);
-quadsi.push(makeDeck()[21]);
-console.log(`quasi`, quadsi);
-console.log(`fourOfAKind outcome on quasi: `, hasFourOfKind(quadsi)); // true
+// let quadsi = makeDeck().slice(33, 35);
+// quadsi.push(makeDeck()[8]);
+// quadsi.push(makeDeck()[47]);
+// quadsi.push(makeDeck()[21]);
+// console.log(`quasi`, quadsi);
+// console.log(`fourOfAKind outcome on quasi: `, hasFourOfKind(quadsi)); // true
 
-// console.log(`random test: `, hasFullHouse(quadsi)); // false
+console.log(`random test: `, hasFlush(royalty)); // false
+
+// ********************//
+// BUTTONS//
+const buttonsArea = document.getElementById('choose');
+// Start Game Button
+const startbutton = document.createElement('button');
+startbutton.innerText = 'start';
+
+// startbutton.type = "start"
+startbutton.onclick = function () {
+  // gamerName.value = '';
+  // congrats.innerText = '';
+  startClick();
+};
+buttonsArea.appendChild(startbutton);
+
+// Submit Game Button
+const submitbutton = document.createElement('button');
+submitbutton.innerText = 'submit';
+
+// submitbutton.type = "submit"
+submitbutton.onclick = function () {
+  // gamerName.value = '';
+  // congrats.innerText = '';
+  evaluateEarnings()
+};
+buttonsArea.appendChild(submitbutton);
+
+// Reset Game Button
+const resetbutton = document.createElement('button');
+resetbutton.innerText = 'reset';
+
+// submitbutton.type = "submit"
+resetbutton.onclick = function () {
+  // gamerName.value = '';
+  // congrats.innerText = '';
+  document.getElementsByName('cardsContainer').innerHTML = '';
+};
+buttonsArea.appendChild(resetbutton);
+
+// ********************//
+// SHOW HAND//
+// Create a visual card from sample card
+const createCard = (cardInfo) => {
+  const suit = document.createElement('div');
+  suit.classList.add('suit', cardInfo.colour);
+  suit.innerText = cardInfo.suitSymbol;
+
+  const name = document.createElement('div');
+  name.classList.add(cardInfo.displayName, cardInfo.colour);
+  name.innerText = cardInfo.displayName;
+
+  const status = document.createElement('div');
+  status.innerText = 'hold';
+
+  const card = document.createElement('div');
+  card.classList.add('card');
+
+  card.appendChild(name);
+  card.appendChild(suit);
+  card.appendChild(status);
+
+  return card;
+};
+
+// Function to display the created card //
+let table = document.getElementById('cardsTable');
+const startClick = () => {
+  document.body.appendChild(table);
+  container = document.createElement('div');
+  container.classList.add('card-container');
+  container.setAttribute('name', 'cardsContainer');
+  document.body.appendChild(container);
+  for (i = 0; i < 5; i++) {
+    hand.push(deck.pop());
+    let cardElement = createCard(hand[i]);
+    container.appendChild(cardElement);
+  }
+  console.log(`hand created`, hand);
+};
 
 // ********************//
 //CALCULATE EARNINGS //
+const earnings = {
+  flushRoyal: 250,
+  flushStraight: 150,
+  kindOfFour: 100,
+  houseFull: 80,
+  flushClassic: 60,
+  straight: 45,
+  kindOfThree: 32,
+  pairDual: 25,
+  pairSolo: 10,
+  lose: -5,
+};
+
+/**
+ * A function that updates credit on hand
+ * @param  hand {array} array of cards in hand
+ * @return {number} which reflect the updated credits on hand
+ */
+const evaluateEarnings = (hand) => {
+  hasRoyalFlush(hand);
+  hasStraightFlush(hand);
+  hasFourOfKind(hand);
+  hasFullHouse(hand);
+  hasFlush(hand);
+  hasStraight(hand);
+  hasThreeOfKind(hand);
+  hasTwoPairs(hand);
+  hasOnePair(hand);
+
+  if (royalFlush === true) {
+    credits += earnings.flushRoyal;
+  } else if (straightFlush === true) {
+    credits += earnings.flushStraight;
+  } else if (fourOfAKind === true) {
+    credits += earnings.kindOfFour;
+  } else if (fullHouse === true) {
+    credits += earnings.houseFull;
+  } else if (flush === true) {
+    credits += earnings.flushClassic;
+  } else if (straight === true) {
+    credits += earnings.straight;
+  } else if (threeOfAKind === true) {
+    credits += earnings.kindOfThree;
+  } else if (twoPair === true) {
+    credits += earnings.pairDual;
+  } else if (onePair === true) {
+    credits += earnings.pairSolo;
+  } else {
+    credits -= earnings.lose;
+  }
+};
