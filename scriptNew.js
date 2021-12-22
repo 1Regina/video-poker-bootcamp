@@ -524,6 +524,21 @@ resetbutton.onclick = function () {
 };
 buttonsArea.appendChild(resetbutton);
 
+// Swap Cards Button
+const swapbutton = document.createElement('button');
+swapbutton.innerText = 'swap';
+
+// swapbutton.type = "swap"
+swapbutton.onclick = function () {
+  console.log('swap');
+  // document.querySelector('#cardsTable').innerHTML = '';
+  diffArray = findDivergence(allCards, cardClick());
+};
+// diffArray.forEach((element) => {
+
+// });
+buttonsArea.appendChild(swapbutton);
+
 // ********************//
 // SHOW HAND//
 // Create a visual card from sample card
@@ -561,30 +576,57 @@ const startClick = () => {
     // liam elem ID creation step 2
     // assign an ID to each of the items (ie. the cards)
     let cardElem = document.createElement('div');
-    cardElem.id = 'cardElem' + i;
+    cardElem.id = `cardElem${i}`;
     cardElem.setAttribute('data-hold', false);
     // add eventListener to each card
-    // document.getElementById(cardElem).addEventListener('click', cardClick);
+    // document.getElementById(`cardElem${i}`).addEventListener('click', () => {
+    //   console.log('hello');
+    // });
     cardElement.appendChild(cardElem);
   }
-
   console.log(`hand created`, hand);
 };
 
-// document.getElementById(cardElem0).addEventListener('click', cardClick);
 // function to hold array of held cards
-const cardClick = (index) => {
-  // for (i = 0; i < allCards.length; i++) {
-  let holdStatus = ('cardElem' + index).dataset.hold;
-  if (holdStatus === false) {
-    holdStatus = true;
+const cardClick = () => {
+  let holdAray = [];
+  for (i = 0; i < allCards.length; i++) {
+    document
+      .querySelector(`#cardElem${i + 1}`)
+      .addEventListener('click', () => {
+        let holdStatus = document.getElementById(`cardElem${index}`).dataset
+          .hold;
+        if (holdStatus === false) {
+          holdStatus = true;
+          cardElement.innerText = 'HOLD';
+          holdAray.push(holdStatus);
+        }
+        if (holdStatus === true) {
+          holdStatus = false;
+          holdAray.push(holdStatus);
+          cardElement.innerText = 'SWAP';
+        }
+      });
   }
-  if (holdStatus === true) {
-    holdStatus = false;
-  }
-  return holdStatus;
-  // }
+  console.log(holdAray);
+  return holdAray;
 };
+
+// compare 2 arrays to find index where there is a change
+var findDivergence = function (a1, a2) {
+  var result = [],
+    longerLength = a1.length >= a2.length ? a1.length : a2.length;
+  for (i = 0; i < longerLength; i++) {
+    if (a1[i] !== a2[i]) {
+      result.push(i);
+    }
+  }
+  console.log(result);
+  return result;
+};
+
+a2 = [true, false, true, false, true];
+findDivergence(allCards, a2);
 
 // ********************//
 //CALCULATE EARNINGS //
