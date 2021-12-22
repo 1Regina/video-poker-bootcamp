@@ -16,6 +16,8 @@ let twoPair = false;
 let onePair = false;
 // let highCard = false; unless duel
 let credits = 100;
+// default initial hold status of cards
+let allCards = [false, false, false, false, false];
 
 // ********************//
 // HELPER FUNCTIONS //
@@ -101,10 +103,10 @@ const shuffleCards = (cardDeck) => {
     // Select the card that corresponds to randomIndex
     let randomCard = cardDeck[randomIndex];
     // Select the card that corresponds to currentIndex
-    // let currentCard = cardDeck[cardIndex];
+    let currentCard = cardDeck[cardIndex];
     // Swap positions of randomCard and currentCard in the deck
     cardDeck[cardIndex] = randomCard;
-    // cardDeck[randomIndex] = currentCard;
+    cardDeck[randomIndex] = currentCard;
   }
   // Return the shuffled deck
   return cardDeck;
@@ -497,9 +499,6 @@ startbutton.innerText = 'start';
 
 // startbutton.type = "start"
 startbutton.onclick = function () {
-  // gamerName.value = '';
-  // congrats.innerText = '';
-  
   startClick();
 };
 buttonsArea.appendChild(startbutton);
@@ -510,8 +509,6 @@ submitbutton.innerText = 'submit';
 
 // submitbutton.type = "submit"
 submitbutton.onclick = function () {
-  // gamerName.value = '';
-  // congrats.innerText = '';
   evaluateEarnings();
 };
 buttonsArea.appendChild(submitbutton);
@@ -520,10 +517,8 @@ buttonsArea.appendChild(submitbutton);
 const resetbutton = document.createElement('button');
 resetbutton.innerText = 'reset';
 
-// submitbutton.type = "submit"
+// resetbutton.type = "reset"
 resetbutton.onclick = function () {
-  // gamerName.value = '';
-  // congrats.innerText = '';
   console.log('reset');
   document.querySelector('#cardsTable').innerHTML = '';
 };
@@ -541,15 +536,11 @@ const createCard = (cardInfo) => {
   name.classList.add(cardInfo.displayName, cardInfo.colour);
   name.innerText = cardInfo.displayName;
 
-  const status = document.createElement('div');
-  status.innerText = 'hold';
-
   const card = document.createElement('div');
   card.classList.add('card');
 
   card.appendChild(name);
   card.appendChild(suit);
-  card.appendChild(status);
 
   return card;
 };
@@ -557,17 +548,42 @@ const createCard = (cardInfo) => {
 // Function to display the created card //
 let table = document.getElementById('cardsTable');
 const startClick = () => {
-  hand=[]
+  hand = [];
   container = document.createElement('div');
   container.classList.add('card-container');
   container.setAttribute('id', 'cards-container');
   table.appendChild(container);
-  for (i = 0; i < 5; i++) {
+  for (i = 0; i < allCards.length; i++) {
     hand.push(deck.pop());
+    // display each card
     let cardElement = createCard(hand[i]);
     container.appendChild(cardElement);
+    // liam elem ID creation step 2
+    // assign an ID to each of the items (ie. the cards)
+    let cardElem = document.createElement('div');
+    cardElem.id = 'cardElem' + i;
+    cardElem.setAttribute('data-hold', false);
+    // add eventListener to each card
+    // document.getElementById(cardElem).addEventListener('click', cardClick);
+    cardElement.appendChild(cardElem);
   }
+
   console.log(`hand created`, hand);
+};
+
+// document.getElementById(cardElem0).addEventListener('click', cardClick);
+// function to hold array of held cards
+const cardClick = (index) => {
+  // for (i = 0; i < allCards.length; i++) {
+  let holdStatus = ('cardElem' + index).dataset.hold;
+  if (holdStatus === false) {
+    holdStatus = true;
+  }
+  if (holdStatus === true) {
+    holdStatus = false;
+  }
+  return holdStatus;
+  // }
 };
 
 // ********************//
