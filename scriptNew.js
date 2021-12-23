@@ -524,6 +524,7 @@ resetbutton.onclick = function () {
   console.log('reset');
   document.querySelector('#cardsTable').innerHTML = '';
   //reinitialise all globals except credits
+  deck = shuffleCards(makeDeck());
   hand = [];
   cardNameTally = {};
   cardSuitTally = {};
@@ -540,12 +541,12 @@ swapbutton.innerText = 'swap';
 swapbutton.onclick = function () {
   console.log('swap');
   // first identify positions where status is changed
+  allCards = ['0', '0', '0', '0', '0'];
   let priorSwapHoldArray = getHoldArray();
   let diffArray = findDivergence(allCards, priorSwapHoldArray);
   console.log(`index position to swap`, diffArray);
 
   // draw new cards to replace in DOM element
-
   diffArray.forEach((element) => {
     let newCardObj = deck.pop();
     // let cardPiece = createCard(newCardObj);
@@ -625,17 +626,16 @@ const startClick = () => {
       // update hold status each time the card is clicked
       if (holdStatus === '0') {
         holdStatus = 1;
+        cardElem.innerText = 'hold';
         cardElem.setAttribute('data-hold', holdStatus);
 
-        // cardPiece.innerText = 'HOLD';
         holdAray.push(holdStatus);
       }
       if (holdStatus === '1') {
         holdStatus = 0;
+        cardElem.innerText = '';
         cardElem.setAttribute('data-hold', holdStatus);
-
         holdAray.push(holdStatus);
-        // cardPiece.innerText = 'SWAP';
       }
       console.log(`ddddd`, holdStatus);
     });
@@ -656,7 +656,7 @@ const getHoldArray = () => {
 };
 
 // compare 2 arrays to find index where there is a change
-var findDivergence = function (a1, a2) {
+const findDivergence = function (a1, a2) {
   var result = [],
     longerLength = a1.length >= a2.length ? a1.length : a2.length;
   for (i = 0; i < longerLength; i++) {
