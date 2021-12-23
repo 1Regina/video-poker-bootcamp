@@ -1,7 +1,6 @@
 // ********************//
 // GLOBAL VARIABLES//
 let hand = [];
-let holdAray = [];
 var cardNameTally = {};
 var cardSuitTally = {};
 // let counterDuplicates = {};
@@ -18,7 +17,9 @@ let onePair = false;
 // let highCard = false; unless duel
 let credits = 100;
 // default initial hold status of cards
-let allCards = [0, 0, 0, 0, 0];
+let allCards = ['0', '0', '0', '0', '0'];
+// final hold status of all card before swap
+let holdAray = [];
 
 // ********************//
 // HELPER FUNCTIONS //
@@ -522,6 +523,12 @@ resetbutton.innerText = 'reset';
 resetbutton.onclick = function () {
   console.log('reset');
   document.querySelector('#cardsTable').innerHTML = '';
+  //reinitialise all globals except credits
+  hand = [];
+  cardNameTally = {};
+  cardSuitTally = {};
+  allCards = ['0', '0', '0', '0', '0'];
+  holdAray = [];
 };
 buttonsArea.appendChild(resetbutton);
 
@@ -529,20 +536,41 @@ buttonsArea.appendChild(resetbutton);
 const swapbutton = document.createElement('button');
 swapbutton.innerText = 'swap';
 
-// swapbutton.type = "swap"
+// // swapbutton.type = "swap"
 swapbutton.onclick = function () {
   console.log('swap');
-  // get update hold status across all 
-  
-  document.querySelector('#cardsTable').innerHTML = '';
-  // document.querySelector('#cardsTable').innerHTML = '';
-  diffArray = findDivergence(allCards, cardClick());
+  // first identify positions where status is changed
+  let priorSwapHoldArray = getHoldArray();
+  let diffArray = findDivergence(allCards, priorSwapHoldArray);
+  console.log(`index position to swap`, diffArray);
+
+  // draw new cards to replace in DOM element
+
+  diffArray.forEach((element) => {
+    let newCardObj = deck.pop();
+    // let cardPiece = createCard(newCardObj);
+    // let changeSpots = document.querySelector(`cardElem${element}`);
+    // changeSpots.innerHTML=""
+    // changeSpots.appendChild(cardPiece);
+    // console.log(`spots to change inner loop`, changeSpots);
+    hand.splice(element, 1, newCardObj);
+  });
+  // clear everything
+  let container = document.querySelector('#cards-container');
+  container.innerHTML = '';
+  // reattached the hand with swap cards
+  for (i = 0; i < hand.length; i++) {
+    // display each card
+    let cardPiece = createCard(hand[i]);
+    container.appendChild(cardPiece);
+    let cardElem = document.createElement('div');
+    cardElem.id = `cardElem${i}`;
+    cardElem.setAttribute('data-hold', 0);
+    console.log(`cardPiece`, `cardPiece${i}`);
+
+    cardPiece.appendChild(cardElem);
+  }
 };
-diffArray.forEach((element) => {
-  let newCard = deck.pop()
-  let cardElement = createCard(hand[i]);
-  container.appendChild(cardElement);
-});
 buttonsArea.appendChild(swapbutton);
 
 // ********************//
@@ -569,7 +597,6 @@ const createCard = (cardInfo) => {
 // Function to display the created card //
 let table = document.getElementById('cardsTable');
 const startClick = () => {
-  hand = [];
   container = document.createElement('div');
   container.classList.add('card-container');
   container.setAttribute('id', 'cards-container');
@@ -577,22 +604,22 @@ const startClick = () => {
   for (i = 0; i < allCards.length; i++) {
     hand.push(deck.pop());
     // display each card
-    let cardElement = createCard(hand[i]);
-    container.appendChild(cardElement);
+    let cardPiece = createCard(hand[i]);
+    container.appendChild(cardPiece);
     // liam elem ID creation step 2
     // assign an ID to each of the items (ie. the cards)
     let cardElem = document.createElement('div');
     cardElem.id = `cardElem${i}`;
     cardElem.setAttribute('data-hold', 0);
-    console.log(`cardElement`, `cardElement${i}`);
+    console.log(`cardPiece`, `cardPiece${i}`);
 
-    cardElement.appendChild(cardElem);
+    cardPiece.appendChild(cardElem);
     console.log(
       `document cardElem id`,
       document.getElementById(`cardElem${i}`)
     );
     // add eventListener to each card
-    cardElement.addEventListener('click', () => {
+    cardPiece.addEventListener('click', () => {
       console.log(`cardElem`, cardElem);
       let holdStatus = cardElem.getAttribute(`data-hold`);
       // update hold status each time the card is clicked
@@ -600,7 +627,7 @@ const startClick = () => {
         holdStatus = 1;
         cardElem.setAttribute('data-hold', holdStatus);
 
-        // cardElement.innerText = 'HOLD';
+        // cardPiece.innerText = 'HOLD';
         holdAray.push(holdStatus);
       }
       if (holdStatus === '1') {
@@ -608,12 +635,24 @@ const startClick = () => {
         cardElem.setAttribute('data-hold', holdStatus);
 
         holdAray.push(holdStatus);
-        // cardElement.innerText = 'SWAP';
+        // cardPiece.innerText = 'SWAP';
       }
       console.log(`ddddd`, holdStatus);
     });
   }
   console.log(`hand created`, hand);
+};
+
+// obtain new array of status of hold on each cardelem
+const getHoldArray = () => {
+  holdAray = [];
+  for (let i = 0; i < allCards.length; i++) {
+    let cardElem = document.querySelector(`#cardElem${i}`);
+    let toSwapStatus = cardElem.getAttribute(`data-hold`);
+    holdAray.push(toSwapStatus);
+  }
+  console.log(`getHoldArray`, holdAray);
+  return holdAray;
 };
 
 // compare 2 arrays to find index where there is a change
