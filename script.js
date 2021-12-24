@@ -116,18 +116,22 @@ const shuffleCards = (cardDeck) => {
 
 let deck = shuffleCards(makeDeck());
 
-// Show 5 cards cover
-let table = document.getElementById('cardsTable');
-let container = document.createElement('div');
-container.classList.add('card-container');
-container.setAttribute('id', 'cards-container');
-table.appendChild(container);
-for (i = 0; i < 5; i++) {
-  var img = document.createElement('img');
-  img.src = 'bb8.png';
-  img.setAttribute('class','cover')
-  container.appendChild(img);
-}
+// function to append 5 cards cover
+const layCardsCover = () => {
+  // retrieve table area
+  let table = document.getElementById('cardsTable');
+  let container = document.createElement('div');
+  container.classList.add('card-container');
+  container.setAttribute('id', 'cards-container');
+  table.appendChild(container);
+  for (i = 0; i < 5; i++) {
+    var img = document.createElement('img');
+    img.src = 'bb8.png';
+    img.setAttribute('class', 'cover');
+    container.appendChild(img);
+  }
+};
+layCardsCover();
 
 // ********************//
 //WINING CONDITIONS //
@@ -557,14 +561,15 @@ submitbutton.onclick = function () {
 };
 buttonsArea.appendChild(submitbutton);
 
-// Reset Game Button
-const resetbutton = document.createElement('button');
-resetbutton.innerText = 'Reset';
+// replay Game Button
+const replaybutton = document.createElement('button');
+replaybutton.innerText = 'Replay';
 
-// resetbutton.type = "reset"
-resetbutton.onclick = function () {
-  console.log('reset');
+// replaybutton.type = "replay"
+replaybutton.onclick = function () {
+  console.log('replay');
   document.querySelector('#cardsTable').innerHTML = '';
+  layCardsCover();
   //reinitialise all globals except credits
   deck = shuffleCards(makeDeck());
   hand = [];
@@ -573,7 +578,7 @@ resetbutton.onclick = function () {
   allCards = ['1', '1', '1', '1', '1'];
   holdAray = [];
 };
-buttonsArea.appendChild(resetbutton);
+buttonsArea.appendChild(replaybutton);
 
 // ********************//
 // SHOW HAND//
@@ -597,8 +602,9 @@ const createCard = (cardInfo) => {
 };
 
 // Function to display the created card //
-// let table = document.getElementById('cardsTable');
+
 const startClick = () => {
+  let table = document.getElementById('cardsTable');
   document.querySelector('#cardsTable').innerHTML = '';
   let container = document.createElement('div');
   container.classList.add('card-container');
