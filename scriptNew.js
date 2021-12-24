@@ -117,6 +117,18 @@ const shuffleCards = (cardDeck) => {
 
 let deck = shuffleCards(makeDeck());
 
+// Show 5 cards cover
+let table = document.getElementById('cardsTable');
+let container = document.createElement('div');
+container.classList.add('card-container');
+container.setAttribute('id', 'cards-container');
+table.appendChild(container);
+for (i = 0; i < 5; i++) {
+  var img = document.createElement('img');
+  img.src = 'bb8.png';
+  img.setAttribute('class','cover')
+  container.appendChild(img);
+}
 // ********************//
 //WINING CONDITIONS //
 // FLUSHES//
@@ -600,8 +612,9 @@ const createCard = (cardInfo) => {
 };
 
 // Function to display the created card //
-let table = document.getElementById('cardsTable');
+// let table = document.getElementById('cardsTable');
 const startClick = () => {
+   document.querySelector('#cardsTable').innerHTML = '';
   let container = document.createElement('div');
   container.classList.add('card-container');
   container.setAttribute('id', 'cards-container');
