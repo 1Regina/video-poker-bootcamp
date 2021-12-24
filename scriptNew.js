@@ -212,8 +212,6 @@ const hasRoyalFlush = (hand) => {
 const hasStraightFlush = (hand) => {
   hand.sort((a, b) => a.rank - b.rank);
   // straight flush
-  console.log(`aa`, hasFlush(hand));
-  console.log(`ab`, hasStraight(hand));
   if (hasFlush(hand) === true && hasStraight(hand) === true) {
     straightFlush = true;
   } else {
@@ -492,64 +490,65 @@ const buttonsArea = document.getElementById('choose');
 // Deal Button
 const dealButton = document.createElement('button');
 dealButton.setAttribute('id', 'newSwapClear');
-dealButton.innerText = 'deal';
+dealButton.innerText = 'DEAL';
 buttonsArea.appendChild(dealButton);
 const btn = document.querySelector('#newSwapClear');
 let idx = 0;
+// clicking to loop through functions in startSwapClear array
 btn.addEventListener('click', () => {
   startSwapClear[idx]();
   if (idx + 1 < startSwapClear.length) idx++;
 });
 
-// Start Game Button
-const startbutton = document.createElement('button');
-startbutton.innerText = 'start';
+// // Start Game Button
+// const startbutton = document.createElement('button');
+// startbutton.innerText = 'start';
 
-// startbutton.type = "start"
-startbutton.onclick = () => {
-  startClick();
-};
-buttonsArea.appendChild(startbutton);
+// // startbutton.type = "start"
+// startbutton.onclick = () => {
+//   startClick();
+// };
+// buttonsArea.appendChild(startbutton);
 
-// Swap Cards Button
-const swapbutton = document.createElement('button');
-swapbutton.innerText = 'swap';
+// // Swap Cards Button
+// const swapbutton = document.createElement('button');
+// swapbutton.innerText = 'swap';
 
-// swapbutton.type = "swap"
-swapbutton.onclick = function () {
-  console.log('swap');
-  // first identify positions where status is changed
-  allCards = ['1', '1', '1', '1', '1'];
-  let priorSwapHoldArray = getHoldArray();
-  let diffArray = findDivergence(allCards, priorSwapHoldArray);
-  console.log(`index position to swap`, diffArray);
+// // swapbutton.type = "swap"
+// swapbutton.onclick = function () {
+//   console.log('swap');
+//   // first identify positions where status is changed
+//   allCards = ['1', '1', '1', '1', '1'];
+//   let priorSwapHoldArray = getHoldArray();
+//   let diffArray = findDivergence(allCards, priorSwapHoldArray);
+//   console.log(`index position to swap`, diffArray);
 
-  // draw new cards to replace in DOM element
-  diffArray.forEach((element) => {
-    let newCardObj = deck.pop();
-    hand.splice(element, 1, newCardObj);
-  });
-  // clear everything
-  let container = document.querySelector('#cards-container');
-  container.innerHTML = '';
-  // reattached the hand with swap cards
-  for (i = 0; i < hand.length; i++) {
-    // display each card
-    let cardPiece = createCard(hand[i]);
-    container.appendChild(cardPiece);
-    let cardElem = document.createElement('div');
-    cardElem.id = `cardElem${i}`;
-    cardElem.setAttribute('data-hold', 0);
-    console.log(`cardPiece`, `cardPiece${i}`);
+//   // draw new cards to replace in DOM element
+//   diffArray.forEach((element) => {
+//     let newCardObj = deck.pop();
+//     hand.splice(element, 1, newCardObj);
+//   });
+//   // clear everything
+//   let container = document.querySelector('#cards-container');
+//   container.innerHTML = '';
+//   // reattached the hand with swap cards
+//   for (i = 0; i < hand.length; i++) {
+//     // display each card
+//     let cardPiece = createCard(hand[i]);
+//     container.appendChild(cardPiece);
+//     let cardElem = document.createElement('div');
+//     cardElem.id = `cardElem${i}`;
+//     cardElem.setAttribute('data-hold', 0);
+//     console.log(`cardPiece`, `cardPiece${i}`);
 
-    cardPiece.appendChild(cardElem);
-  }
-};
-buttonsArea.appendChild(swapbutton);
+//     cardPiece.appendChild(cardElem);
+//   }
+// };
+// buttonsArea.appendChild(swapbutton);
 
 // Submit Game Button
 const submitbutton = document.createElement('button');
-submitbutton.innerText = 'submit';
+submitbutton.innerText = 'SUBMIT';
 
 // submitbutton.type = "submit"
 submitbutton.onclick = function () {
@@ -562,22 +561,22 @@ submitbutton.onclick = function () {
 buttonsArea.appendChild(submitbutton);
 
 // Reset Game Button
-const resetbutton = document.createElement('button');
-resetbutton.innerText = 'reset';
+// const resetbutton = document.createElement('button');
+// resetbutton.innerText = 'reset';
 
-// resetbutton.type = "reset"
-resetbutton.onclick = function () {
-  console.log('reset');
-  document.querySelector('#cardsTable').innerHTML = '';
-  //reinitialise all globals except credits
-  deck = shuffleCards(makeDeck());
-  hand = [];
-  cardNameTally = {};
-  cardSuitTally = {};
-  allCards = ['1', '1', '1', '1', '1'];
-  holdAray = [];
-};
-buttonsArea.appendChild(resetbutton);
+// // resetbutton.type = "reset"
+// resetbutton.onclick = function () {
+//   console.log('reset');
+//   document.querySelector('#cardsTable').innerHTML = '';
+//   //reinitialise all globals except credits
+//   deck = shuffleCards(makeDeck());
+//   hand = [];
+//   cardNameTally = {};
+//   cardSuitTally = {};
+//   allCards = ['1', '1', '1', '1', '1'];
+//   holdAray = [];
+// };
+// buttonsArea.appendChild(resetbutton);
 
 // ********************//
 // SHOW HAND//
@@ -649,6 +648,7 @@ const startClick = () => {
   mode = 'swap';
 };
 
+// function to compare which cards were held and flip the unheld ones
 const swapCards = () => {
   console.log('swap');
   // first identify positions where status is changed
@@ -678,6 +678,7 @@ const swapCards = () => {
   }
 };
 
+// function to clear the cards on display and reinitialise some globals
 const clearTable = () => {
   console.log('reset');
   document.querySelector('#cardsTable').innerHTML = '';
@@ -689,7 +690,7 @@ const clearTable = () => {
   allCards = ['1', '1', '1', '1', '1'];
   holdAray = [];
 };
-
+// aaray to line up the sequence of functions
 const startSwapClear = [startClick, swapCards, clearTable];
 
 // obtain new array of status of hold on each cardelem
