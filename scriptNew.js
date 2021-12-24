@@ -117,18 +117,22 @@ const shuffleCards = (cardDeck) => {
 
 let deck = shuffleCards(makeDeck());
 
-// Show 5 cards cover
-let table = document.getElementById('cardsTable');
-let container = document.createElement('div');
-container.classList.add('card-container');
-container.setAttribute('id', 'cards-container');
-table.appendChild(container);
-for (i = 0; i < 5; i++) {
-  var img = document.createElement('img');
-  img.src = 'bb8.png';
-  img.setAttribute('class','cover')
-  container.appendChild(img);
-}
+// function to append 5 cards cover
+const layCardsCover = () => {
+  // retrieve table area
+  let table = document.getElementById('cardsTable');
+  let container = document.createElement('div');
+  container.classList.add('card-container');
+  container.setAttribute('id', 'cards-container');
+  table.appendChild(container);
+  for (i = 0; i < 5; i++) {
+    var img = document.createElement('img');
+    img.src = 'bb8.png';
+    img.setAttribute('class', 'cover');
+    container.appendChild(img);
+  }
+};
+layCardsCover();
 // ********************//
 //WINING CONDITIONS //
 // FLUSHES//
@@ -501,15 +505,15 @@ const buttonsArea = document.getElementById('choose');
 
 // Deal Button
 const dealButton = document.createElement('button');
-dealButton.setAttribute('id', 'newSwapClear');
+dealButton.setAttribute('id', 'newSwap');
 dealButton.innerText = 'DEAL';
 buttonsArea.appendChild(dealButton);
-const btn = document.querySelector('#newSwapClear');
+const btn = document.querySelector('#newSwap');
 let idx = 0;
-// clicking to loop through functions in startSwapClear array
+// clicking to loop through functions in startSwap array
 btn.addEventListener('click', () => {
-  startSwapClear[idx]();
-  if (idx + 1 < startSwapClear.length) idx++;
+  startSwap[idx]();
+  if (idx + 1 < startSwap.length) idx++;
 });
 
 // // Start Game Button
@@ -572,23 +576,24 @@ submitbutton.onclick = function () {
 };
 buttonsArea.appendChild(submitbutton);
 
-// Reset Game Button
-// const resetbutton = document.createElement('button');
-// resetbutton.innerText = 'reset';
+// replay Game Button
+const replaybutton = document.createElement('button');
+replaybutton.innerText = 'Replay';
 
-// // resetbutton.type = "reset"
-// resetbutton.onclick = function () {
-//   console.log('reset');
-//   document.querySelector('#cardsTable').innerHTML = '';
-//   //reinitialise all globals except credits
-//   deck = shuffleCards(makeDeck());
-//   hand = [];
-//   cardNameTally = {};
-//   cardSuitTally = {};
-//   allCards = ['1', '1', '1', '1', '1'];
-//   holdAray = [];
-// };
-// buttonsArea.appendChild(resetbutton);
+// replaybutton.type = "replay"
+replaybutton.onclick = function () {
+  console.log('replay');
+  document.querySelector('#cardsTable').innerHTML = '';
+  layCardsCover();
+  //reinitialise all globals except credits
+  deck = shuffleCards(makeDeck());
+  hand = [];
+  cardNameTally = {};
+  cardSuitTally = {};
+  allCards = ['1', '1', '1', '1', '1'];
+  holdAray = [];
+};
+buttonsArea.appendChild(replaybutton);
 
 // ********************//
 // SHOW HAND//
@@ -612,7 +617,7 @@ const createCard = (cardInfo) => {
 };
 
 // Function to display the created card //
-// let table = document.getElementById('cardsTable');
+let table = document.getElementById('cardsTable');
 const startClick = () => {
    document.querySelector('#cardsTable').innerHTML = '';
   let container = document.createElement('div');
@@ -691,20 +696,20 @@ const swapCards = () => {
   }
 };
 
-// function to clear the cards on display and reinitialise some globals
-const clearTable = () => {
-  console.log('reset');
-  document.querySelector('#cardsTable').innerHTML = '';
-  //reinitialise all globals except credits
-  deck = shuffleCards(makeDeck());
-  hand = [];
-  cardNameTally = {};
-  cardSuitTally = {};
-  allCards = ['1', '1', '1', '1', '1'];
-  holdAray = [];
-};
+// // function to clear the cards on display and reinitialise some globals
+// const clearTable = () => {
+//   console.log('reset');
+//   document.querySelector('#cardsTable').innerHTML = '';
+//   //reinitialise all globals except credits
+//   deck = shuffleCards(makeDeck());
+//   hand = [];
+//   cardNameTally = {};
+//   cardSuitTally = {};
+//   allCards = ['1', '1', '1', '1', '1'];
+//   holdAray = [];
+// };
 // aaray to line up the sequence of functions
-const startSwapClear = [startClick, swapCards, clearTable];
+const startSwap = [startClick, swapCards];
 
 // obtain new array of status of hold on each cardelem
 const getHoldArray = () => {
