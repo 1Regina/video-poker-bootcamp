@@ -15,11 +15,12 @@ let threeOfAKind = false;
 let twoPair = false;
 let onePair = false;
 // let highCard = false; unless duel
-let credits = 1;
+let credits = 10;
 // default initial hold status of cards
 let allCards = ['1', '1', '1', '1', '1'];
 // final hold status of all card before swap
 let holdAray = [];
+let mode = 'begin';
 
 // ********************//
 // HELPER FUNCTIONS //
@@ -168,7 +169,10 @@ const hasStraight = (hand) => {
   hand.sort((a, b) => a.rank - b.rank);
   // Loop over hand
   for (let i = 0; i < hand.length; i += 1) {
-    if (hand[i + 1].rank - hand[i].rank === 1) {
+    if (
+      hand[i + 1].rank - hand[i].rank === 1 &&
+      hand[4].rank - hand[0].rank === 4
+    ) {
       straight = true;
     } else {
       straight = false;
@@ -424,71 +428,85 @@ const hasFourOfKind = (hand) => {
 
 // ********************//
 //SANDBOX TESTING //
+const testingAll = () => {
+  console.log(`!!!!FLUSH TESTING!!!`);
+  let straits = makeDeck().slice(15, 20);
+  console.log(`straits`, straits);
+  let oddStraits = makeDeck().slice(17, 20);
+  let oddStraitsA = makeDeck()[2];
+  let oddStraitsA1 = makeDeck()[3];
+  oddStraits.push(oddStraitsA);
+  oddStraits.push(oddStraitsA1);
+  console.log(`oddStraits: `, oddStraits);
+  console.log(` Straight outcome on straits:`, hasStraight(straits)); // true
+  console.log(` Straight outcome on oddStraits:`, hasStraight(oddStraits)); // true
+  console.log(`@@@@@@@@@@@@@@@@@@@@@@@@@@@@@`);
+  console.log(` Straight Flush outcome on straits:`, hasStraightFlush(straits)); //true
+  console.log(` Straight Flush on oddStraits:`, hasStraightFlush(oddStraits)); // false
+  console.log(`&&&&&&&&&&&&&&&&&&&&&&&&&&&&&`);
+  let royalty = makeDeck().slice(9, 13);
+  royalty.push(makeDeck()[0]);
+  console.log(`royalty`, royalty);
+  console.log(`$$$$$$$$$$$$$$$$$$$$$$$$$$`);
+  console.log(`Royal Flush outcome:`, hasRoyalFlush(royalty)); //true
 
-// console.log(`!!!!FLUSH TESTING!!!`);
-// let straits = makeDeck().slice(15, 20);
-// console.log(`straits`, straits);
-// let oddStraits = makeDeck().slice(17, 20);
-// let oddStraitsA = makeDeck()[2];
-// let oddStraitsA1 = makeDeck()[3];
-// oddStraits.push(oddStraitsA);
-// oddStraits.push(oddStraitsA1);
-// console.log(`oddStraits: `, oddStraits);
-// console.log(` Straight outcome on straits:`, hasStraight(straits)); // true
-// console.log(` Straight outcome on oddStraits:`, hasStraight(oddStraits)); // true
-// console.log(`@@@@@@@@@@@@@@@@@@@@@@@@@@@@@`);
-// console.log(` Straight Flush outcome on straits:`, hasStraightFlush(straits)); //true
-// console.log(` Straight Flush on oddStraits:`, hasStraightFlush(oddStraits)); // false
-// console.log(`&&&&&&&&&&&&&&&&&&&&&&&&&&&&&`);
-// let royalty = makeDeck().slice(9, 13);
-// royalty.push(makeDeck()[0]);
-// console.log(`royalty`, royalty);
-// console.log(`$$$$$$$$$$$$$$$$$$$$$$$$$$`);
-// console.log(`Royal Flush outcome:`, hasRoyalFlush(royalty)); //true
+  console.log(`!!!!PAIRS & KINDS TESTING!!!`);
+  let twin = makeDeck().slice(31, 35);
+  twin.push(makeDeck()[47]);
+  console.log(`twin`, twin);
+  console.log(`OnePair outcome on twin: `, hasOnePair(twin)); // true
 
-// console.log(`!!!!PAIRS & KINDS TESTING!!!`);
-// let twin = makeDeck().slice(31, 35);
-// twin.push(makeDeck()[47]);
-// console.log(`twin`, twin);
-// console.log(`OnePair outcome on twin: `, hasOnePair(twin)); // true
+  let twinTwin = makeDeck().slice(32, 35);
+  twinTwin.push(makeDeck()[6]);
+  twinTwin.push(makeDeck()[47]);
+  console.log(`twinTwin`, twinTwin);
+  console.log(`TwoPair outcome on twinTwin: `, hasTwoPairs(twinTwin)); // true
 
-// let twinTwin = makeDeck().slice(32, 35);
-// twinTwin.push(makeDeck()[6]);
-// twinTwin.push(makeDeck()[47]);
-// console.log(`twinTwin`, twinTwin);
-// console.log(`TwoPair outcome on twinTwin: `, hasTwoPairs(twinTwin)); // true
+  let triple = makeDeck().slice(32, 35);
+  triple.push(makeDeck()[8]);
+  triple.push(makeDeck()[47]);
+  console.log(`triple`, triple);
+  console.log(`ThreeOfAKind outcome on triple: `, hasThreeOfKind(triple)); // true
 
-// let triple = makeDeck().slice(32, 35);
-// triple.push(makeDeck()[8]);
-// triple.push(makeDeck()[47]);
-// console.log(`triple`, triple);
-// console.log(`ThreeOfAKind outcome on triple: `, hasThreeOfKind(triple)); // true
+  let fully = makeDeck().slice(33, 35);
+  fully.push(makeDeck()[7]);
+  fully.push(makeDeck()[47]);
+  fully.push(makeDeck()[20]);
+  console.log(`fully`, fully);
+  console.log(`fullHouse outcome on fully: `, hasFullHouse(fully)); // true
 
-// let fully = makeDeck().slice(33, 35);
-// fully.push(makeDeck()[7]);
-// fully.push(makeDeck()[47]);
-// fully.push(makeDeck()[20]);
-// console.log(`fully`, fully);
-// console.log(`fullHouse outcome on fully: `, hasFullHouse(fully)); // true
+  let quadsi = makeDeck().slice(33, 35);
+  quadsi.push(makeDeck()[8]);
+  quadsi.push(makeDeck()[47]);
+  quadsi.push(makeDeck()[21]);
+  console.log(`quasi`, quadsi);
+  console.log(`fourOfAKind outcome on quasi: `, hasFourOfKind(quadsi)); // true
 
-// let quadsi = makeDeck().slice(33, 35);
-// quadsi.push(makeDeck()[8]);
-// quadsi.push(makeDeck()[47]);
-// quadsi.push(makeDeck()[21]);
-// console.log(`quasi`, quadsi);
-// console.log(`fourOfAKind outcome on quasi: `, hasFourOfKind(quadsi)); // true
-
-// console.log(`random test: `, hasFlush(royalty)); // false
+  console.log(`random test: `, hasFlush(royalty)); // false
+};
 
 // ********************//
 // BUTTONS//
 const buttonsArea = document.getElementById('choose');
+
+// Deal Button
+const dealButton = document.createElement('button');
+dealButton.setAttribute('id', 'newSwapClear');
+dealButton.innerText = 'deal';
+buttonsArea.appendChild(dealButton);
+const btn = document.querySelector('#newSwapClear');
+let idx = 0;
+btn.addEventListener('click', () => {
+  startSwapClear[idx]();
+  if (idx + 1 < startSwapClear.length) idx++;
+});
+
 // Start Game Button
 const startbutton = document.createElement('button');
 startbutton.innerText = 'start';
 
 // startbutton.type = "start"
-startbutton.onclick = function () {
+startbutton.onclick = () => {
   startClick();
 };
 buttonsArea.appendChild(startbutton);
@@ -585,7 +603,7 @@ const createCard = (cardInfo) => {
 // Function to display the created card //
 let table = document.getElementById('cardsTable');
 const startClick = () => {
-  container = document.createElement('div');
+  let container = document.createElement('div');
   container.classList.add('card-container');
   container.setAttribute('id', 'cards-container');
   table.appendChild(container);
@@ -615,20 +633,64 @@ const startClick = () => {
         holdStatus = 1;
         cardElem.innerText = 'hold';
         cardElem.setAttribute('data-hold', holdStatus);
-
         holdAray.push(holdStatus);
       }
       if (holdStatus === '1') {
         holdStatus = 0;
         cardElem.innerText = '';
         cardElem.setAttribute('data-hold', holdStatus);
+
         holdAray.push(holdStatus);
       }
       console.log(`ddddd`, holdStatus);
     });
   }
   console.log(`hand created`, hand);
+  mode = 'swap';
 };
+
+const swapCards = () => {
+  console.log('swap');
+  // first identify positions where status is changed
+  allCards = ['1', '1', '1', '1', '1'];
+  let priorSwapHoldArray = getHoldArray();
+  let diffArray = findDivergence(allCards, priorSwapHoldArray);
+  console.log(`index position to swap`, diffArray);
+
+  // draw new cards to replace in DOM element
+  diffArray.forEach((element) => {
+    let newCardObj = deck.pop();
+    hand.splice(element, 1, newCardObj);
+  });
+  // clear everything
+  let container = document.querySelector('#cards-container');
+  container.innerHTML = '';
+  // reattached the hand with swap cards
+  for (i = 0; i < hand.length; i++) {
+    // display each card
+    let cardPiece = createCard(hand[i]);
+    container.appendChild(cardPiece);
+    let cardElem = document.createElement('div');
+    cardElem.id = `cardElem${i}`;
+    cardElem.setAttribute('data-hold', 0);
+    console.log(`cardPiece`, `cardPiece${i}`);
+    cardPiece.appendChild(cardElem);
+  }
+};
+
+const clearTable = () => {
+  console.log('reset');
+  document.querySelector('#cardsTable').innerHTML = '';
+  //reinitialise all globals except credits
+  deck = shuffleCards(makeDeck());
+  hand = [];
+  cardNameTally = {};
+  cardSuitTally = {};
+  allCards = ['1', '1', '1', '1', '1'];
+  holdAray = [];
+};
+
+const startSwapClear = [startClick, swapCards, clearTable];
 
 // obtain new array of status of hold on each cardelem
 const getHoldArray = () => {
@@ -676,50 +738,60 @@ const earnings = {
  * @return {number} which reflect the updated credits on hand
  */
 const evaluateEarnings = (hand) => {
-  hasRoyalFlush(hand);
-  hasStraightFlush(hand);
-  hasFourOfKind(hand);
-  hasFullHouse(hand);
-  hasFlush(hand);
-  hasStraight(hand);
-  hasThreeOfKind(hand);
-  hasTwoPairs(hand);
-  hasOnePair(hand);
+  // hasRoyalFlush(hand);
+  // hasStraightFlush(hand);
+  // hasFourOfKind(hand);
+  // hasFullHouse(hand);
+  // hasFlush(hand);
+  // hasStraight(hand);
+  // hasThreeOfKind(hand);
+  // hasTwoPairs(hand);
+  // hasOnePair(hand);
 
-  if (hasRoyalFlush === true) {
+  if (hasRoyalFlush(hand) === true) {
     credits += earnings.flushRoyal;
-
+    console.log(`royalflush`, credits);
     return credits;
-  } else if (hasStraightFlush === true) {
+  } else if (hasStraightFlush(hand) === true) {
     credits += earnings.flushStraight;
+    console.log(`straightflush`, credits);
     return credits;
-  } else if (hasFourOfKind === true) {
+  } else if (hasFourOfKind(hand) === true) {
     credits += earnings.kindOfFour;
+    console.log(`4 of a kind`, credits);
     return credits;
-  } else if (hasFullHouse === true) {
+  } else if (hasFullHouse(hand) === true) {
     credits += earnings.houseFull;
+    console.log(`fullhouse`, credits);
     return credits;
-  } else if (hasFlush === true) {
+  } else if (hasFlush(hand) === true) {
     credits += earnings.flushClassic;
+    console.log(`flush`, credits);
     return credits;
-  } else if (hasStraight === true) {
+  } else if (hasStraight(hand) === true) {
     credits += earnings.straight;
+    console.log(`straights`, credits);
     return credits;
-  } else if (hasThreeOfKind === true) {
+  } else if (hasThreeOfKind(hand) === true) {
     credits += earnings.kindOfThree;
+    console.log(`3 of a kind`, credits);
     return credits;
-  } else if (hasTwoPairs === true) {
+  } else if (hasTwoPairs(hand) === true) {
     credits += earnings.pairDual;
+    console.log(`hasTwoPairs`, credits);
     return credits;
-  } else if (hasOnePair === true) {
+  } else if (hasOnePair(hand) === true) {
     credits += earnings.pairSolo;
+    console.log(`one pair`, credits);
     return credits;
   } else {
     credits += earnings.lose;
+    console.log(`loss`, credits);
     if (credits < 0) {
       credits = 'Game Over';
       return credits;
     } else {
+      console.log(`positive loss`, credits);
       return credits;
     }
   }
