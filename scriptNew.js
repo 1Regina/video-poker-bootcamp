@@ -3,7 +3,7 @@
 let hand = [];
 var cardNameTally = {};
 var cardSuitTally = {};
-// let counterDuplicates = {};
+let counterDuplicates = {};
 // let outcome = {};
 let royalFlush = false;
 let straightFlush = false;
@@ -15,9 +15,9 @@ let threeOfAKind = false;
 let twoPair = false;
 let onePair = false;
 // let highCard = false; unless duel
-let credits = 100;
+let credits = 1;
 // default initial hold status of cards
-let allCards = ['0', '0', '0', '0', '0'];
+let allCards = ['1', '1', '1', '1', '1'];
 // final hold status of all card before swap
 let holdAray = [];
 
@@ -501,7 +501,7 @@ swapbutton.innerText = 'swap';
 swapbutton.onclick = function () {
   console.log('swap');
   // first identify positions where status is changed
-  allCards = ['0', '0', '0', '0', '0'];
+  allCards = ['1', '1', '1', '1', '1'];
   let priorSwapHoldArray = getHoldArray();
   let diffArray = findDivergence(allCards, priorSwapHoldArray);
   console.log(`index position to swap`, diffArray);
@@ -556,7 +556,7 @@ resetbutton.onclick = function () {
   hand = [];
   cardNameTally = {};
   cardSuitTally = {};
-  allCards = ['0', '0', '0', '0', '0'];
+  allCards = ['1', '1', '1', '1', '1'];
   holdAray = [];
 };
 buttonsArea.appendChild(resetbutton);
@@ -688,39 +688,39 @@ const evaluateEarnings = (hand) => {
 
   if (hasRoyalFlush === true) {
     credits += earnings.flushRoyal;
-    return credits
+
+    return credits;
   } else if (hasStraightFlush === true) {
     credits += earnings.flushStraight;
-     return credits;
+    return credits;
   } else if (hasFourOfKind === true) {
     credits += earnings.kindOfFour;
-     return credits;
+    return credits;
   } else if (hasFullHouse === true) {
     credits += earnings.houseFull;
-     return credits;
+    return credits;
   } else if (hasFlush === true) {
     credits += earnings.flushClassic;
-     return credits;
+    return credits;
   } else if (hasStraight === true) {
     credits += earnings.straight;
-     return credits;
+    return credits;
   } else if (hasThreeOfKind === true) {
     credits += earnings.kindOfThree;
-     return credits;
+    return credits;
   } else if (hasTwoPairs === true) {
     credits += earnings.pairDual;
-     return credits;
+    return credits;
   } else if (hasOnePair === true) {
     credits += earnings.pairSolo;
-     return credits;
+    return credits;
   } else {
-    credits -= earnings.lose; return credits;
+    credits += earnings.lose;
+    if (credits < 0) {
+      credits = 'Game Over';
+      return credits;
+    } else {
+      return credits;
+    }
   }
-  // return earnings;
 };
-
-// const sorting = (hand) =>{
-//   //  hand.sort((a, b) => (a.rank > b.rank ? 1 : b.rank > a.rank ? -1 : 0));
-//   hand.sort((a, b) => a.rank - b.rank);
-//    console.log(`sorted hand in end`, hand)
-// }
