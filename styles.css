@@ -1,10 +1,15 @@
 body {
-  background-color: grey;
+  /* background-color: grey; */
   /* rgb(223, 233, 233); */
+  background-image: url('https://i.pinimg.com/736x/03/5b/fe/035bfea4ef4f622370eb8329e0a2740c--wallpaper-pictures-hd-wallpaper.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
 }
 
 h1 {
   text-align: center;
+  color: goldenrod
 }
 
 .center {
@@ -20,8 +25,9 @@ h1 {
 .earnings {
   display: flex;
   justify-content: center;
-  background-color: white;
-  color: grey;
+  /* background-color: white; */
+  color: white;
+  font-size: 16px;
 }
 .flex-container {
   height: 100%;
@@ -36,15 +42,15 @@ h1 {
   border: 1px solid blue;
 } */
 .flex-item {
-  background-color: #77e9bf;
+  /* background-color: #77e9bf; */
   padding: 5px;
   width: auto;
   height: auto;
   margin: 10px;
   line-height: 20px;
-  color: rgb(24, 5, 5);
+  color: goldenrod;
   font-weight: bold;
-  font-size: 1em;
+  font-size: 2em;
   text-align: center;
   justify-content: center;
 }
@@ -53,7 +59,7 @@ h1 {
   display: flex;
   width: auto;
   border: none;
-  background-color: #77e9bf;
+  background-color: goldenrod;
   color: white;
   padding: 14px 28px;
   font-size: 16px;
