@@ -15,7 +15,7 @@ let threeOfAKind = false;
 let twoPair = false;
 let onePair = false;
 // let highCard = false; unless duel
-let credits = 1;
+let credits = 10;
 // default initial hold status of cards
 let allCards = ['1', '1', '1', '1', '1'];
 // final hold status of all card before swap
@@ -168,7 +168,10 @@ const hasStraight = (hand) => {
   hand.sort((a, b) => a.rank - b.rank);
   // Loop over hand
   for (let i = 0; i < hand.length; i += 1) {
-    if (hand[i + 1].rank - hand[i].rank === 1) {
+    if (
+      hand[i + 1].rank - hand[i].rank === 1 &&
+      hand[4].rank - hand[0].rank === 4
+    ) {
       straight = true;
     } else {
       straight = false;
@@ -208,8 +211,6 @@ const hasRoyalFlush = (hand) => {
 const hasStraightFlush = (hand) => {
   hand.sort((a, b) => a.rank - b.rank);
   // straight flush
-  console.log(`aa`, hasFlush(hand));
-  console.log(`ab`, hasStraight(hand));
   if (hasFlush(hand) === true && hasStraight(hand) === true) {
     straightFlush = true;
   } else {
@@ -485,7 +486,7 @@ const hasFourOfKind = (hand) => {
 const buttonsArea = document.getElementById('choose');
 // Start Game Button
 const startbutton = document.createElement('button');
-startbutton.innerText = 'start';
+startbutton.innerText = 'Start';
 
 // startbutton.type = "start"
 startbutton.onclick = function () {
@@ -495,7 +496,7 @@ buttonsArea.appendChild(startbutton);
 
 // Swap Cards Button
 const swapbutton = document.createElement('button');
-swapbutton.innerText = 'swap';
+swapbutton.innerText = 'Swap';
 
 // swapbutton.type = "swap"
 swapbutton.onclick = function () {
@@ -531,7 +532,7 @@ buttonsArea.appendChild(swapbutton);
 
 // Submit Game Button
 const submitbutton = document.createElement('button');
-submitbutton.innerText = 'submit';
+submitbutton.innerText = 'Submit';
 
 // submitbutton.type = "submit"
 submitbutton.onclick = function () {
@@ -545,7 +546,7 @@ buttonsArea.appendChild(submitbutton);
 
 // Reset Game Button
 const resetbutton = document.createElement('button');
-resetbutton.innerText = 'reset';
+resetbutton.innerText = 'Reset';
 
 // resetbutton.type = "reset"
 resetbutton.onclick = function () {
@@ -686,40 +687,50 @@ const evaluateEarnings = (hand) => {
   hasTwoPairs(hand);
   hasOnePair(hand);
 
-  if (hasRoyalFlush === true) {
+  if (hasRoyalFlush(hand) === true) {
     credits += earnings.flushRoyal;
-
+    console.log(`royalflush`, credits);
     return credits;
-  } else if (hasStraightFlush === true) {
+  } else if (hasStraightFlush(hand) === true) {
     credits += earnings.flushStraight;
+    console.log(`straightflush`, credits);
     return credits;
-  } else if (hasFourOfKind === true) {
+  } else if (hasFourOfKind(hand) === true) {
     credits += earnings.kindOfFour;
+    console.log(`4 of a kind`, credits);
     return credits;
-  } else if (hasFullHouse === true) {
+  } else if (hasFullHouse(hand) === true) {
     credits += earnings.houseFull;
+    console.log(`fullhouse`, credits);
     return credits;
-  } else if (hasFlush === true) {
+  } else if (hasFlush(hand) === true) {
     credits += earnings.flushClassic;
+    console.log(`flush`, credits);
     return credits;
-  } else if (hasStraight === true) {
+  } else if (hasStraight(hand) === true) {
     credits += earnings.straight;
+    console.log(`straights`, credits);
     return credits;
-  } else if (hasThreeOfKind === true) {
+  } else if (hasThreeOfKind(hand) === true) {
     credits += earnings.kindOfThree;
+    console.log(`3 of a kind`, credits);
     return credits;
-  } else if (hasTwoPairs === true) {
+  } else if (hasTwoPairs(hand) === true) {
     credits += earnings.pairDual;
+    console.log(`hasTwoPairs`, credits);
     return credits;
-  } else if (hasOnePair === true) {
+  } else if (hasOnePair(hand) === true) {
     credits += earnings.pairSolo;
+    console.log(`one pair`, credits);
     return credits;
   } else {
     credits += earnings.lose;
+    console.log(`loss`, credits);
     if (credits < 0) {
       credits = 'Game Over';
       return credits;
     } else {
+      console.log(`positive loss`, credits);
       return credits;
     }
   }
