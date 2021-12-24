@@ -116,19 +116,6 @@ const shuffleCards = (cardDeck) => {
 
 let deck = shuffleCards(makeDeck());
 
-const createHand = () => {
-  // for (let handIndex = 0; handIndex < numCards; handIndex += 1) {
-  //   hand[handIndex].push(deck.pop());
-  // }
-  hand.push(deck.pop());
-  hand.push(deck.pop());
-  hand.push(deck.pop());
-  hand.push(deck.pop());
-  hand.push(deck.pop());
-
-  return hand;
-};
-
 // ********************//
 //WINING CONDITIONS //
 // FLUSHES//
@@ -197,6 +184,7 @@ const hasStraight = (hand) => {
  */
 const hasRoyalFlush = (hand) => {
   hand.sort((a, b) => a.rank - b.rank);
+  // hand.sort((a, b) => (a.rank > b.rank ? 1 : b.rank > a.rank ? -1 : 0));
   // royal flush
   if (
     hasFlush(hand) === true &&
@@ -452,8 +440,8 @@ const hasFourOfKind = (hand) => {
 // console.log(` Straight Flush outcome on straits:`, hasStraightFlush(straits)); //true
 // console.log(` Straight Flush on oddStraits:`, hasStraightFlush(oddStraits)); // false
 // console.log(`&&&&&&&&&&&&&&&&&&&&&&&&&&&&&`);
-let royalty = makeDeck().slice(9, 13);
-royalty.push(makeDeck()[0]);
+// let royalty = makeDeck().slice(9, 13);
+// royalty.push(makeDeck()[0]);
 // console.log(`royalty`, royalty);
 // console.log(`$$$$$$$$$$$$$$$$$$$$$$$$$$`);
 // console.log(`Royal Flush outcome:`, hasRoyalFlush(royalty)); //true
@@ -490,7 +478,7 @@ royalty.push(makeDeck()[0]);
 // console.log(`quasi`, quadsi);
 // console.log(`fourOfAKind outcome on quasi: `, hasFourOfKind(quadsi)); // true
 
-console.log(`random test: `, hasFlush(royalty)); // false
+// console.log(`random test: `, hasFlush(royalty)); // false
 
 // ********************//
 // BUTTONS//
@@ -505,13 +493,53 @@ startbutton.onclick = function () {
 };
 buttonsArea.appendChild(startbutton);
 
+// Swap Cards Button
+const swapbutton = document.createElement('button');
+swapbutton.innerText = 'swap';
+
+// swapbutton.type = "swap"
+swapbutton.onclick = function () {
+  console.log('swap');
+  // first identify positions where status is changed
+  allCards = ['0', '0', '0', '0', '0'];
+  let priorSwapHoldArray = getHoldArray();
+  let diffArray = findDivergence(allCards, priorSwapHoldArray);
+  console.log(`index position to swap`, diffArray);
+
+  // draw new cards to replace in DOM element
+  diffArray.forEach((element) => {
+    let newCardObj = deck.pop();
+    hand.splice(element, 1, newCardObj);
+  });
+  // clear everything
+  let container = document.querySelector('#cards-container');
+  container.innerHTML = '';
+  // reattached the hand with swap cards
+  for (i = 0; i < hand.length; i++) {
+    // display each card
+    let cardPiece = createCard(hand[i]);
+    container.appendChild(cardPiece);
+    let cardElem = document.createElement('div');
+    cardElem.id = `cardElem${i}`;
+    cardElem.setAttribute('data-hold', 0);
+    console.log(`cardPiece`, `cardPiece${i}`);
+
+    cardPiece.appendChild(cardElem);
+  }
+};
+buttonsArea.appendChild(swapbutton);
+
 // Submit Game Button
 const submitbutton = document.createElement('button');
 submitbutton.innerText = 'submit';
 
 // submitbutton.type = "submit"
 submitbutton.onclick = function () {
-  evaluateEarnings();
+  // sorting(hand);
+  // console.log(`hand submitted`, hand)
+  let displayBal = document.getElementById('wallet');
+  let updateBalance = evaluateEarnings(hand);
+  displayBal.innerText = updateBalance;
 };
 buttonsArea.appendChild(submitbutton);
 
@@ -533,51 +561,13 @@ resetbutton.onclick = function () {
 };
 buttonsArea.appendChild(resetbutton);
 
-// Swap Cards Button
-const swapbutton = document.createElement('button');
-swapbutton.innerText = 'swap';
-
-// // swapbutton.type = "swap"
-swapbutton.onclick = function () {
-  console.log('swap');
-  // first identify positions where status is changed
-  allCards = ['0', '0', '0', '0', '0'];
-  let priorSwapHoldArray = getHoldArray();
-  let diffArray = findDivergence(allCards, priorSwapHoldArray);
-  console.log(`index position to swap`, diffArray);
-
-  // draw new cards to replace in DOM element
-  diffArray.forEach((element) => {
-    let newCardObj = deck.pop();
-    // let cardPiece = createCard(newCardObj);
-    // let changeSpots = document.querySelector(`cardElem${element}`);
-    // changeSpots.innerHTML=""
-    // changeSpots.appendChild(cardPiece);
-    // console.log(`spots to change inner loop`, changeSpots);
-    hand.splice(element, 1, newCardObj);
-  });
-  // clear everything
-  let container = document.querySelector('#cards-container');
-  container.innerHTML = '';
-  // reattached the hand with swap cards
-  for (i = 0; i < hand.length; i++) {
-    // display each card
-    let cardPiece = createCard(hand[i]);
-    container.appendChild(cardPiece);
-    let cardElem = document.createElement('div');
-    cardElem.id = `cardElem${i}`;
-    cardElem.setAttribute('data-hold', 0);
-    console.log(`cardPiece`, `cardPiece${i}`);
-
-    cardPiece.appendChild(cardElem);
-  }
-};
-buttonsArea.appendChild(swapbutton);
-
 // ********************//
 // SHOW HAND//
 // Create a visual card from sample card
 const createCard = (cardInfo) => {
+  const card = document.createElement('div');
+  card.classList.add('card');
+
   const suit = document.createElement('div');
   suit.classList.add('suit', cardInfo.colour);
   suit.innerText = cardInfo.suitSymbol;
@@ -585,9 +575,6 @@ const createCard = (cardInfo) => {
   const name = document.createElement('div');
   name.classList.add(cardInfo.displayName, cardInfo.colour);
   name.innerText = cardInfo.displayName;
-
-  const card = document.createElement('div');
-  card.classList.add('card');
 
   card.appendChild(name);
   card.appendChild(suit);
@@ -699,27 +686,41 @@ const evaluateEarnings = (hand) => {
   hasTwoPairs(hand);
   hasOnePair(hand);
 
-  if (royalFlush === true) {
+  if (hasRoyalFlush === true) {
     credits += earnings.flushRoyal;
-  } else if (straightFlush === true) {
+    return credits
+  } else if (hasStraightFlush === true) {
     credits += earnings.flushStraight;
-  } else if (fourOfAKind === true) {
+     return credits;
+  } else if (hasFourOfKind === true) {
     credits += earnings.kindOfFour;
-  } else if (fullHouse === true) {
+     return credits;
+  } else if (hasFullHouse === true) {
     credits += earnings.houseFull;
-  } else if (flush === true) {
+     return credits;
+  } else if (hasFlush === true) {
     credits += earnings.flushClassic;
-  } else if (straight === true) {
+     return credits;
+  } else if (hasStraight === true) {
     credits += earnings.straight;
-  } else if (threeOfAKind === true) {
+     return credits;
+  } else if (hasThreeOfKind === true) {
     credits += earnings.kindOfThree;
-  } else if (twoPair === true) {
+     return credits;
+  } else if (hasTwoPairs === true) {
     credits += earnings.pairDual;
-  } else if (onePair === true) {
+     return credits;
+  } else if (hasOnePair === true) {
     credits += earnings.pairSolo;
+     return credits;
   } else {
-    credits -= earnings.lose;
+    credits -= earnings.lose; return credits;
   }
-  let displayBal = document.getElementById('wallet');
-  displayBal.innerText = credits;
+  // return earnings;
 };
+
+// const sorting = (hand) =>{
+//   //  hand.sort((a, b) => (a.rank > b.rank ? 1 : b.rank > a.rank ? -1 : 0));
+//   hand.sort((a, b) => a.rank - b.rank);
+//    console.log(`sorted hand in end`, hand)
+// }
