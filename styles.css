@@ -9,7 +9,7 @@ body {
 
 h1 {
   text-align: center;
-  color: goldenrod
+  color: goldenrod;
 }
 
 .center {
@@ -68,12 +68,22 @@ h1 {
   justify-content: space-around;
 }
 
+.instructions {
+  display: flex;
+  flex-wrap: wrap;
+  word-wrap: break-word;
+  margin-right: 10px;
+  width: 400px;
+  height: auto;
+  margin: 5px 5px 5px 5px;
+}
+
 .card {
   margin: 10px;
   padding: 10px;
   background-color: whitesmoke;
-  height: 80px;
-  width: 50px;
+  height: 90px;
+  width: 70px;
   text-align: center;
   border-radius: 8px;
   display: inline-block;
