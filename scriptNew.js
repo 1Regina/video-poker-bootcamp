@@ -38,6 +38,17 @@ let mode = 'begin';
 let earnings = {};
 
 // ********************//
+// MUSIC //
+const music = document.getElementById('myAudio');
+
+function playAudio() {
+  music.play();
+}
+
+function pauseAudio() {
+  music.pause();
+} 
+// ********************//
 // HELPER FUNCTIONS //
 const makeDeck = () => {
   // Initialise an empty deck array
@@ -520,18 +531,28 @@ const testingAll = () => {
 const betStandardButton = document.querySelector('#betStandard');
 betStandardButton.onclick = () => {
   earnings = betStandard;
+  document.getElementById('betStandard').style.background = 'red';
+  document.getElementById('betPower').style.background = 'goldrod';
+  document.getElementById('betDouble').style.background = 'goldenrod';
+
   return earnings;
 };
 
 const betPowerdButton = document.querySelector('#betPower');
 betPowerdButton.onclick = () => {
   earnings = betPower;
+  document.getElementById('betStandard').style.background = 'goldenrod';
+  document.getElementById('betPower').style.background = 'red';
+  document.getElementById('betDouble').style.background = 'goldenrod';
   return earnings;
 };
 
 const betDoubleButton = document.querySelector('#betDouble');
 betDoubleButton.onclick = () => {
   earnings = betDouble;
+  document.getElementById('betStandard').style.background = 'goldenrod';
+  document.getElementById('betPower').style.background = 'goldenrod';
+  document.getElementById('betDouble').style.background = 'red';
   return earnings;
 };
 

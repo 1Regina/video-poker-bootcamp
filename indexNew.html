@@ -22,7 +22,23 @@
         src="https://static.wikia.nocookie.net/disneyemojiblitz/images/9/9f/EmojiBlitzStormtrooper1.png/revision/latest/top-crop/width/360/height/450?cb=20201231152518"
       />
     </h1>
+    <audio id="myAudio">
+      <!-- <source src="horse.ogg" type="audio/ogg" /> -->
+      <source src="Cantina_Song.mp3" type="audio/mpeg" />
+      Your browser does not support the audio element.
+    </audio>
+    <h4 style="color: azure; margin-left: 20px">Play Music</h4>
+    <img
+      style="width: 35px; height: 35px; margin-left: 20px"
+      onclick="playAudio()"
+      src="play.png"
+    />
 
+    <img
+      style="width: 35px; height: 35px"
+      onclick="pauseAudio()"
+      src="pause.png"
+    />
     <div class="flex-container">
       <div class="row">
         <div class="flex-item">
@@ -120,7 +136,10 @@
         <ol>
           <b><u>INSTRUCTIONS</u></b>
           <li>
-            <p>Click on the bet ("Standard" or "Power Up" or "Double") you want to play</p>
+            <p>
+              Click on the bet ("Standard" or "Power Up" or "Double") you want
+              to play
+            </p>
           </li>
           <li>
             <p>Click on "DEAL" once</p>
@@ -152,5 +171,6 @@
     <!-- <script type="module" src="script.js"></script> -->
     <!-- <script src="scriptOld.js"></script> -->
     <script src="scriptNew.js"></script>
+    <!-- <script src="script.js"></script> -->
   </body>
 </html>
