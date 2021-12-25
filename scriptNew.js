@@ -1,16 +1,16 @@
-import {
-  straits,
-  oddStraits,
-  royalty,
-  twin,
-  twinTwin,
-  triple,
-  fully,
-  quadsi,
-  betStandard,
-  betPower,
-  betDouble,
-} from './infoSummary.js';
+// import {
+//   straits,
+//   oddStraits,
+//   royalty,
+//   twin,
+//   twinTwin,
+//   triple,
+//   fully,
+//   quadsi,
+//   betStandard,
+//   betPower,
+//   betDouble,
+// } from './infoSummary.js';
 
 // ********************//
 // GLOBAL VARIABLES//

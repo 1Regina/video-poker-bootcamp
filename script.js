@@ -1,16 +1,16 @@
-import {
-  straits,
-  oddStraits,
-  royalty,
-  twin,
-  twinTwin,
-  triple,
-  fully,
-  quadsi,
-  betStandard,
-  betPower,
-  betDouble,
-} from './infoSummary.js';
+// import {
+//   straits,
+//   oddStraits,
+//   royalty,
+//   twin,
+//   twinTwin,
+//   triple,
+//   fully,
+//   quadsi,
+//   betStandard,
+//   betPower,
+//   betDouble,
+// } from './infoSummary.js';
 
 // ********************//
 // GLOBAL VARIABLES//
@@ -34,6 +34,7 @@ let credits = 10;
 let allCards = ['1', '1', '1', '1', '1'];
 // final hold status of all card before swap
 let holdAray = [];
+let bet = {}
 
 // ********************//
 // HELPER FUNCTIONS //
