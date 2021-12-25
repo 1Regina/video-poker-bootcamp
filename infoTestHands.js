@@ -348,3 +348,6 @@ const quadsi = [
     rank: 9,
   },
 ];
+
+
+export { straits, oddStraits, royalty, twin, twinTwin, triple, fully, quadsi};

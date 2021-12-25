@@ -1,3 +1,17 @@
+import {
+  straits,
+  oddStraits,
+  royalty,
+  twin,
+  twinTwin,
+  triple,
+  fully,
+  quadsi,
+  betStandard,
+  betPower,
+  betDouble,
+} from './infoSummary.js';
+
 // ********************//
 // GLOBAL VARIABLES//
 let hand = [];
@@ -619,7 +633,7 @@ const createCard = (cardInfo) => {
 // Function to display the created card //
 let table = document.getElementById('cardsTable');
 const startClick = () => {
-   document.querySelector('#cardsTable').innerHTML = '';
+  document.querySelector('#cardsTable').innerHTML = '';
   let container = document.createElement('div');
   container.classList.add('card-container');
   container.setAttribute('id', 'cards-container');
