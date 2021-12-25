@@ -37,9 +37,17 @@
         <table class="earnings" id="earningsTable">
           <tr style="background-color: goldenrod; color: whitesmoke">
             <th>Win</th>
-            <th>Standard</th>
-            <th>Power Up</th>
-            <th>Double</th>
+            <th>
+              <button class="betbutton" id="BetStandard">
+                <b>Standard</b>
+              </button>
+            </th>
+            <th>
+              <button class="betbutton" id="BetPower"><b>Power Up</b></button>
+            </th>
+            <th>
+              <button class="betbutton" id="BetDouble"><b>Double Up</b></button>
+            </th>
           </tr>
           <tr>
             <td style="text-align: left"><i> Royal Flush</i></td>
@@ -94,6 +102,12 @@
             <td>10</td>
             <td>15</td>
             <td>20</td>
+          </tr>
+          <tr>
+            <td style="text-align: left"><i>Lose</i></td>
+            <td>-5</td>
+            <td>-10</td>
+            <td>-20</td>
           </tr>
         </table>
         <div id="choose" class="buttonBlock"></div>
