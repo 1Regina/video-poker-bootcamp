@@ -34,7 +34,7 @@ let credits = 10;
 let allCards = ['1', '1', '1', '1', '1'];
 // final hold status of all card before swap
 let holdAray = [];
-let bet = {}
+let earnings = {};
 
 // ********************//
 // HELPER FUNCTIONS //
@@ -515,13 +515,31 @@ const testingAll = () => {
 };
 // ********************//
 // BUTTONS//
+
+const betStandardButton = document.querySelector('#betStandard');
+betStandardButton.onclick = () => {
+  earnings = betStandard;
+  return earnings
+};
+
+const betPowerdButton = document.querySelector('#betPower');
+betPowerdButton.onclick = () => {
+  earnings = betPower;
+  return earnings;
+};
+
+const betDoubleButton = document.querySelector('#betDouble');
+betDoubleButton.onclick = () => {
+  earnings = betDouble;
+  return earnings;
+};
 const buttonsArea = document.getElementById('choose');
 // Start Game Button
 const startbutton = document.createElement('button');
 startbutton.innerText = 'Start';
 
 // startbutton.type = "start"
-startbutton.onclick = function () {
+startbutton.onclick = () => {
   startClick();
 };
 buttonsArea.appendChild(startbutton);
@@ -693,7 +711,7 @@ const findDivergence = function (a1, a2) {
 
 // ********************//
 //CALCULATE EARNINGS //
-const earnings = {
+const betStandard = {
   flushRoyal: 250,
   flushStraight: 150,
   kindOfFour: 100,
@@ -704,6 +722,32 @@ const earnings = {
   pairDual: 25,
   pairSolo: 10,
   lose: -5,
+};
+
+const betPower = {
+  flushRoyal: 375,
+  flushStraight: 225,
+  kindOfFour: 150,
+  houseFull: 120,
+  flushClassic: 90,
+  straight: 68,
+  kindOfThree: 48,
+  pairDual: 38,
+  pairSolo: 15,
+  lose: -10,
+};
+
+const betDouble = {
+  flushRoyal: 500,
+  flushStraight: 300,
+  kindOfFour: 200,
+  houseFull: 160,
+  flushClassic: 120,
+  straight: 90,
+  kindOfThree: 64,
+  pairDual: 50,
+  pairSolo: 20,
+  lose: -20,
 };
 
 /**
