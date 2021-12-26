@@ -503,62 +503,62 @@ const hasFourOfKind = (hand) => {
 
 // ********************//
 //SANDBOX TESTING //
-// const testingAll = () => {
-//   console.log(`!!!!FLUSH TESTING!!!`);
-//   let straits = makeDeck().slice(15, 20);
-//   console.log(`straits`, straits);
-// let oddStraits = makeDeck().slice(17, 20);
-// let oddStraitsA = makeDeck()[2];
-// let oddStraitsA1 = makeDeck()[3];
-// oddStraits.push(oddStraitsA);
-// oddStraits.push(oddStraitsA1);
-// console.log(`oddStraits: `, oddStraits);
-//   console.log(` Straight outcome on straits:`, hasStraight(straits)); // true
-//   console.log(` Straight outcome on oddStraits:`, hasStraight(oddStraits)); // true
-//   console.log(`@@@@@@@@@@@@@@@@@@@@@@@@@@@@@`);
-//   console.log(` Straight Flush outcome on straits:`, hasStraightFlush(straits)); //true
-//   console.log(` Straight Flush on oddStraits:`, hasStraightFlush(oddStraits)); // false
-//   console.log(`&&&&&&&&&&&&&&&&&&&&&&&&&&&&&`);
-//   let royalty = makeDeck().slice(9, 13);
-//   royalty.push(makeDeck()[0]);
-//   console.log(`royalty`, royalty);
-//   console.log(`$$$$$$$$$$$$$$$$$$$$$$$$$$`);
-//   console.log(`Royal Flush outcome:`, hasRoyalFlush(royalty)); //true
+const testingAll = () => {
+  console.log(`!!!!FLUSH TESTING!!!`);
+  let straits = makeDeck().slice(15, 20);
+  console.log(`straits`, straits);
+  let oddStraits = makeDeck().slice(17, 20);
+  let oddStraitsA = makeDeck()[2];
+  let oddStraitsA1 = makeDeck()[3];
+  oddStraits.push(oddStraitsA);
+  oddStraits.push(oddStraitsA1);
+  console.log(`oddStraits: `, oddStraits);
+  console.log(` Straight outcome on straits:`, hasStraight(straits)); // true
+  console.log(` Straight outcome on oddStraits:`, hasStraight(oddStraits)); // true
+  console.log(`@@@@@@@@@@@@@@@@@@@@@@@@@@@@@`);
+  console.log(` Straight Flush outcome on straits:`, hasStraightFlush(straits)); //true
+  console.log(` Straight Flush on oddStraits:`, hasStraightFlush(oddStraits)); // false
+  console.log(`&&&&&&&&&&&&&&&&&&&&&&&&&&&&&`);
+  let royalty = makeDeck().slice(9, 13);
+  royalty.push(makeDeck()[0]);
+  console.log(`royalty`, royalty);
+  console.log(`$$$$$$$$$$$$$$$$$$$$$$$$$$`);
+  console.log(`Royal Flush outcome:`, hasRoyalFlush(royalty)); //true
 
-//   console.log(`!!!!PAIRS & KINDS TESTING!!!`);
-//   let twin = makeDeck().slice(31, 35);
-//   twin.push(makeDeck()[47]);
-//   console.log(`twin`, twin);
-//   console.log(`OnePair outcome on twin: `, hasOnePair(twin)); // true
+  console.log(`!!!!PAIRS & KINDS TESTING!!!`);
+  let twin = makeDeck().slice(31, 35);
+  twin.push(makeDeck()[47]);
+  console.log(`twin`, twin);
+  console.log(`OnePair outcome on twin: `, hasOnePair(twin)); // true
 
-//   let twin = makeDeck().slice(31, 35);
-//   twinTwin.push(makeDeck()[6]);
-//   twinTwin.push(makeDeck()[47]);
-//   console.log(`twinTwin`, twinTwin);
-//   console.log(`TwoPair outcome on twinTwin: `, hasTwoPairs(twinTwin)); // true
+  let twinTwin = makeDeck().slice(31, 35);
+  twinTwin.push(makeDeck()[6]);
+  twinTwin.push(makeDeck()[47]);
+  console.log(`twinTwin`, twinTwin);
+  console.log(`TwoPair outcome on twinTwin: `, hasTwoPairs(twinTwin)); // true
 
-//   let triple = makeDeck().slice(32, 35);
-//   triple.push(makeDeck()[8]);
-//   triple.push(makeDeck()[47]);
-//   console.log(`triple`, triple);
-//   console.log(`ThreeOfAKind outcome on triple: `, hasThreeOfKind(triple)); // true
+  let triple = makeDeck().slice(32, 35);
+  triple.push(makeDeck()[8]);
+  triple.push(makeDeck()[47]);
+  console.log(`triple`, triple);
+  console.log(`ThreeOfAKind outcome on triple: `, hasThreeOfKind(triple)); // true
 
-//   let fully = makeDeck().slice(33, 35);
-//   fully.push(makeDeck()[7]);
-//   fully.push(makeDeck()[47]);
-//   fully.push(makeDeck()[20]);
-//   console.log(`fully`, fully);
-//   console.log(`fullHouse outcome on fully: `, hasFullHouse(fully)); // true
+  let fully = makeDeck().slice(33, 35);
+  fully.push(makeDeck()[7]);
+  fully.push(makeDeck()[47]);
+  fully.push(makeDeck()[20]);
+  console.log(`fully`, fully);
+  console.log(`fullHouse outcome on fully: `, hasFullHouse(fully)); // true
 
-//   let quadsi = makeDeck().slice(33, 35);
-//   quadsi.push(makeDeck()[8]);
-//   quadsi.push(makeDeck()[47]);
-//   quadsi.push(makeDeck()[21]);
-//   console.log(`quasi`, quadsi);
-//   console.log(`fourOfAKind outcome on quasi: `, hasFourOfKind(quadsi)); // true
+  let quadsi = makeDeck().slice(33, 35);
+  quadsi.push(makeDeck()[8]);
+  quadsi.push(makeDeck()[47]);
+  quadsi.push(makeDeck()[21]);
+  console.log(`quasi`, quadsi);
+  console.log(`fourOfAKind outcome on quasi: `, hasFourOfKind(quadsi)); // true
 
-//   console.log(`random test: `, hasFlush(royalty)); // false
-// };
+  console.log(`random test: `, hasFlush(royalty)); // false
+};
 // ********************//
 // BUTTONS//
 
