@@ -42,6 +42,7 @@ let earnings = {};
 const music = document.getElementById('myAudio');
 
 function playAudio() {
+  music.loop = true;
   music.play();
 }
 
@@ -161,6 +162,12 @@ const layCardsCover = () => {
 };
 layCardsCover();
 
+// let picHand = []
+//Check if array contains all elements of another array
+// const hasPictInStraight = (hand, picHand) => {
+//   return picHand.every((i) => hand.includes(i));
+// };
+
 // ********************//
 //WINING CONDITIONS //
 // FLUSHES//
@@ -214,9 +221,35 @@ const hasStraight = (hand) => {
   // Loop over hand
   for (let i = 0; i < hand.length; i += 1) {
     if (
-      hand[i + 1].rank - hand[i].rank === 1 &&
-      hand[4].rank - hand[0].rank === 4
+      // normal straight
+      (hand[i + 1].rank - hand[i].rank === 1 &&
+        hand[4].rank - hand[0].rank === 4) ||
+      // king-ace-2-3-4
+      (hand[0].rank === 1 &&
+        hand[1].rank === 2 &&
+        hand[2].rank === 3 &&
+        hand[3].rank === 4 &&
+        hand[4].rank === 13) ||
+      // queen-king-ace-2-3
+      (hand[0].rank === 1 &&
+        hand[1].rank === 2 &&
+        hand[2].rank === 3 &&
+        hand[3].rank === 12 &&
+        hand[4].rank === 13) ||
+      // jack-queen-king-ace-2
+      (hand[0].rank === 1 &&
+        hand[1].rank === 2 &&
+        hand[2].rank === 11 &&
+        hand[3].rank === 12 &&
+        hand[4].rank === 13) ||
+      // 10-jack-queen-king-ace(
+      (hand[0].rank === 1 &&
+        hand[1].rank === 10 &&
+        hand[2].rank === 11 &&
+        hand[3].rank === 12 &&
+        hand[4].rank === 13)
     ) {
+      // console.log(`hasSraight variance ${hand[4].rank - hand[0].rank === 4}`);
       straight = true;
     } else {
       straight = false;
@@ -470,64 +503,68 @@ const hasFourOfKind = (hand) => {
 
 // ********************//
 //SANDBOX TESTING //
-const testingAll = () => {
-  console.log(`!!!!FLUSH TESTING!!!`);
-  let straits = makeDeck().slice(15, 20);
-  console.log(`straits`, straits);
-  let oddStraits = makeDeck().slice(17, 20);
-  let oddStraitsA = makeDeck()[2];
-  let oddStraitsA1 = makeDeck()[3];
-  oddStraits.push(oddStraitsA);
-  oddStraits.push(oddStraitsA1);
-  console.log(`oddStraits: `, oddStraits);
-  console.log(` Straight outcome on straits:`, hasStraight(straits)); // true
-  console.log(` Straight outcome on oddStraits:`, hasStraight(oddStraits)); // true
-  console.log(`@@@@@@@@@@@@@@@@@@@@@@@@@@@@@`);
-  console.log(` Straight Flush outcome on straits:`, hasStraightFlush(straits)); //true
-  console.log(` Straight Flush on oddStraits:`, hasStraightFlush(oddStraits)); // false
-  console.log(`&&&&&&&&&&&&&&&&&&&&&&&&&&&&&`);
-  let royalty = makeDeck().slice(9, 13);
-  royalty.push(makeDeck()[0]);
-  console.log(`royalty`, royalty);
-  console.log(`$$$$$$$$$$$$$$$$$$$$$$$$$$`);
-  console.log(`Royal Flush outcome:`, hasRoyalFlush(royalty)); //true
+// const testingAll = () => {
+//   console.log(`!!!!FLUSH TESTING!!!`);
+//   let straits = makeDeck().slice(15, 20);
+//   console.log(`straits`, straits);
+// let oddStraits = makeDeck().slice(17, 20);
+// let oddStraitsA = makeDeck()[2];
+// let oddStraitsA1 = makeDeck()[3];
+// oddStraits.push(oddStraitsA);
+// oddStraits.push(oddStraitsA1);
+// console.log(`oddStraits: `, oddStraits);
+//   console.log(` Straight outcome on straits:`, hasStraight(straits)); // true
+//   console.log(` Straight outcome on oddStraits:`, hasStraight(oddStraits)); // true
+//   console.log(`@@@@@@@@@@@@@@@@@@@@@@@@@@@@@`);
+//   console.log(` Straight Flush outcome on straits:`, hasStraightFlush(straits)); //true
+//   console.log(` Straight Flush on oddStraits:`, hasStraightFlush(oddStraits)); // false
+//   console.log(`&&&&&&&&&&&&&&&&&&&&&&&&&&&&&`);
+//   let royalty = makeDeck().slice(9, 13);
+//   royalty.push(makeDeck()[0]);
+//   console.log(`royalty`, royalty);
+//   console.log(`$$$$$$$$$$$$$$$$$$$$$$$$$$`);
+//   console.log(`Royal Flush outcome:`, hasRoyalFlush(royalty)); //true
 
-  console.log(`!!!!PAIRS & KINDS TESTING!!!`);
-  let twin = makeDeck().slice(31, 35);
-  twin.push(makeDeck()[47]);
-  console.log(`twin`, twin);
-  console.log(`OnePair outcome on twin: `, hasOnePair(twin)); // true
+//   console.log(`!!!!PAIRS & KINDS TESTING!!!`);
+//   let twin = makeDeck().slice(31, 35);
+//   twin.push(makeDeck()[47]);
+//   console.log(`twin`, twin);
+//   console.log(`OnePair outcome on twin: `, hasOnePair(twin)); // true
 
-  let twinTwin = makeDeck().slice(32, 35);
-  twinTwin.push(makeDeck()[6]);
-  twinTwin.push(makeDeck()[47]);
-  console.log(`twinTwin`, twinTwin);
-  console.log(`TwoPair outcome on twinTwin: `, hasTwoPairs(twinTwin)); // true
+//   let twin = makeDeck().slice(31, 35);
+//   twinTwin.push(makeDeck()[6]);
+//   twinTwin.push(makeDeck()[47]);
+//   console.log(`twinTwin`, twinTwin);
+//   console.log(`TwoPair outcome on twinTwin: `, hasTwoPairs(twinTwin)); // true
 
-  let triple = makeDeck().slice(32, 35);
-  triple.push(makeDeck()[8]);
-  triple.push(makeDeck()[47]);
-  console.log(`triple`, triple);
-  console.log(`ThreeOfAKind outcome on triple: `, hasThreeOfKind(triple)); // true
+//   let triple = makeDeck().slice(32, 35);
+//   triple.push(makeDeck()[8]);
+//   triple.push(makeDeck()[47]);
+//   console.log(`triple`, triple);
+//   console.log(`ThreeOfAKind outcome on triple: `, hasThreeOfKind(triple)); // true
 
-  let fully = makeDeck().slice(33, 35);
-  fully.push(makeDeck()[7]);
-  fully.push(makeDeck()[47]);
-  fully.push(makeDeck()[20]);
-  console.log(`fully`, fully);
-  console.log(`fullHouse outcome on fully: `, hasFullHouse(fully)); // true
+//   let fully = makeDeck().slice(33, 35);
+//   fully.push(makeDeck()[7]);
+//   fully.push(makeDeck()[47]);
+//   fully.push(makeDeck()[20]);
+//   console.log(`fully`, fully);
+//   console.log(`fullHouse outcome on fully: `, hasFullHouse(fully)); // true
 
-  let quadsi = makeDeck().slice(33, 35);
-  quadsi.push(makeDeck()[8]);
-  quadsi.push(makeDeck()[47]);
-  quadsi.push(makeDeck()[21]);
-  console.log(`quasi`, quadsi);
-  console.log(`fourOfAKind outcome on quasi: `, hasFourOfKind(quadsi)); // true
+//   let quadsi = makeDeck().slice(33, 35);
+//   quadsi.push(makeDeck()[8]);
+//   quadsi.push(makeDeck()[47]);
+//   quadsi.push(makeDeck()[21]);
+//   console.log(`quasi`, quadsi);
+//   console.log(`fourOfAKind outcome on quasi: `, hasFourOfKind(quadsi)); // true
 
-  console.log(`random test: `, hasFlush(royalty)); // false
-};
+//   console.log(`random test: `, hasFlush(royalty)); // false
+// };
 // ********************//
 // BUTTONS//
+
+const instruction = document.querySelector('#instruction');
+instruction.innerText =
+  '1. Click on the bet (`Standard` or `Power Up` or `Double`) you want to play.';
 
 const betStandardButton = document.querySelector('#betStandard');
 betStandardButton.onclick = () => {
@@ -536,6 +573,7 @@ betStandardButton.onclick = () => {
     document.getElementById('betStandard').style.background = 'red';
     document.getElementById('betPower').style.background = 'goldenrod';
     document.getElementById('betDouble').style.background = 'goldenrod';
+    instruction.innerText = '2. Click on `Start` button.';
     mode = 'start';
     return earnings;
   }
@@ -548,6 +586,7 @@ betPowerdButton.onclick = () => {
     document.getElementById('betStandard').style.background = 'goldenrod';
     document.getElementById('betPower').style.background = 'red';
     document.getElementById('betDouble').style.background = 'goldenrod';
+    instruction.innerText = '2. Click on `Start` button.';
     mode = 'start';
     return earnings;
   }
@@ -560,6 +599,7 @@ betDoubleButton.onclick = () => {
     document.getElementById('betStandard').style.background = 'goldenrod';
     document.getElementById('betPower').style.background = 'goldenrod';
     document.getElementById('betDouble').style.background = 'red';
+    instruction.innerText = '2. Click on `Start` button.';
     mode = 'start';
     return earnings;
   }
@@ -573,8 +613,10 @@ startbutton.innerText = 'Start';
 startbutton.onclick = () => {
   if (mode === 'start') {
     startClick();
+    instruction.innerText =
+      '3. Click on the cards to hold. To change your mind, click again on card that is on hold. When done, click on the `Swap` button';
+    mode = 'swap';
   }
-  mode = 'swap';
 };
 buttonsArea.appendChild(startbutton);
 
@@ -612,8 +654,9 @@ swapbutton.onclick = function () {
 
       cardPiece.appendChild(cardElem);
     }
+    instruction.innerText = '4. Click `Submit` to see your new credit balance.';
+    mode = 'submit';
   }
-  mode = 'submit';
 };
 buttonsArea.appendChild(swapbutton);
 
@@ -629,8 +672,10 @@ submitbutton.onclick = function () {
     let displayBal = document.getElementById('wallet');
     let updateBalance = evaluateEarnings(hand);
     displayBal.innerText = updateBalance;
+    instruction.innerText =
+      '5. Click `Replay` to clear the cards and play again.';
+    mode = 'replay';
   }
-  mode = 'replay';
 };
 buttonsArea.appendChild(submitbutton);
 
@@ -654,6 +699,8 @@ replaybutton.onclick = function () {
     document.getElementById('betStandard').style.background = 'goldenrod';
     document.getElementById('betPower').style.background = 'goldenrod';
     document.getElementById('betDouble').style.background = 'goldenrod';
+    instruction.innerText =
+      '1. Click on the bet (`Standard` or `Power Up` or `Double`) you want to play';
     mode = 'choose bet';
   }
 };
@@ -853,6 +900,7 @@ const evaluateEarnings = (hand) => {
     console.log(`loss`, credits);
     if (credits < 0) {
       credits = 'Game Over';
+      mode = 'game over';
       return credits;
     } else {
       console.log(`positive loss`, credits);
