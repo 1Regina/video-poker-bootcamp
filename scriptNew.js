@@ -34,20 +34,21 @@ let credits = 10;
 let allCards = ['1', '1', '1', '1', '1'];
 // final hold status of all card before swap
 let holdAray = [];
-let mode = 'begin';
+let mode = 'choose bet';
 let earnings = {};
 
 // ********************//
 // MUSIC //
 const music = document.getElementById('myAudio');
 
-function playAudio() {
+const playAudio = () => {
+  music.loop = true;
   music.play();
-}
+};
 
 function pauseAudio() {
   music.pause();
-} 
+}
 // ********************//
 // HELPER FUNCTIONS //
 const makeDeck = () => {
@@ -212,8 +213,33 @@ const hasStraight = (hand) => {
   // Loop over hand
   for (let i = 0; i < hand.length; i += 1) {
     if (
-      hand[i + 1].rank - hand[i].rank === 1 &&
-      hand[4].rank - hand[0].rank === 4
+      // normal straight
+      (hand[i + 1].rank - hand[i].rank === 1 &&
+        hand[4].rank - hand[0].rank === 4) ||
+      // king-ace-2-3-4
+      (hand[0].rank === 1 &&
+        hand[1].rank === 2 &&
+        hand[2].rank === 3 &&
+        hand[3].rank === 4 &&
+        hand[4].rank === 13) ||
+      // queen-king-ace-2-3
+      (hand[0].rank === 1 &&
+        hand[1].rank === 2 &&
+        hand[2].rank === 3 &&
+        hand[3].rank === 12 &&
+        hand[4].rank === 13) ||
+      // jack-queen-king-ace-2
+      (hand[0].rank === 1 &&
+        hand[1].rank === 2 &&
+        hand[2].rank === 11 &&
+        hand[3].rank === 12 &&
+        hand[4].rank === 13) ||
+      // 10-jack-queen-king-ace(
+      (hand[0].rank === 1 &&
+        hand[1].rank === 10 &&
+        hand[2].rank === 11 &&
+        hand[3].rank === 12 &&
+        hand[4].rank === 13)
     ) {
       straight = true;
     } else {
@@ -528,32 +554,47 @@ const testingAll = () => {
 // ********************//
 // BUTTONS//
 
+const instruction = document.querySelector('#instruction');
+instruction.innerText =
+  '1. Click on the bet (`Standard` or `Power Up` or `Double`) you want to play.';
+
 const betStandardButton = document.querySelector('#betStandard');
 betStandardButton.onclick = () => {
-  earnings = betStandard;
-  document.getElementById('betStandard').style.background = 'red';
-  document.getElementById('betPower').style.background = 'goldrod';
-  document.getElementById('betDouble').style.background = 'goldenrod';
-
-  return earnings;
+  if (mode === 'choose bet') {
+    earnings = betStandard;
+    document.getElementById('betStandard').style.background = 'red';
+    document.getElementById('betPower').style.background = 'goldenrod';
+    document.getElementById('betDouble').style.background = 'goldenrod';
+    instruction.innerText = '2. Click on `Deal` button.';
+    mode = 'start';
+    return earnings;
+  }
 };
 
 const betPowerdButton = document.querySelector('#betPower');
 betPowerdButton.onclick = () => {
-  earnings = betPower;
-  document.getElementById('betStandard').style.background = 'goldenrod';
-  document.getElementById('betPower').style.background = 'red';
-  document.getElementById('betDouble').style.background = 'goldenrod';
-  return earnings;
+  if (mode === 'choose bet') {
+    earnings = betPower;
+    document.getElementById('betStandard').style.background = 'goldenrod';
+    document.getElementById('betPower').style.background = 'red';
+    document.getElementById('betDouble').style.background = 'goldenrod';
+    instruction.innerText = '2. Click on `Deal` button.';
+    mode = 'start';
+    return earnings;
+  }
 };
 
 const betDoubleButton = document.querySelector('#betDouble');
 betDoubleButton.onclick = () => {
-  earnings = betDouble;
-  document.getElementById('betStandard').style.background = 'goldenrod';
-  document.getElementById('betPower').style.background = 'goldenrod';
-  document.getElementById('betDouble').style.background = 'red';
-  return earnings;
+  if (mode === 'choose bet') {
+    earnings = betDouble;
+    document.getElementById('betStandard').style.background = 'goldenrod';
+    document.getElementById('betPower').style.background = 'goldenrod';
+    document.getElementById('betDouble').style.background = 'red';
+    instruction.innerText = '2. Click on `Deal` button';
+    mode = 'start';
+    return earnings;
+  }
 };
 
 const buttonsArea = document.getElementById('choose');
@@ -564,6 +605,7 @@ dealButton.setAttribute('id', 'newSwap');
 dealButton.innerText = 'DEAL';
 buttonsArea.appendChild(dealButton);
 const btn = document.querySelector('#newSwap');
+
 let idx = 0;
 // clicking to loop through functions in startSwap array
 btn.addEventListener('click', () => {
@@ -577,8 +619,12 @@ btn.addEventListener('click', () => {
 
 // // startbutton.type = "start"
 // startbutton.onclick = () => {
-//   startClick();
-// };
+//   if (mode === 'start') {
+//     startClick();
+//     instruction.innerText =
+//       '3. Click on the cards to hold. To change your mind, click again on card that is on hold. When done, click on the `Swap` button';
+//     mode = 'swap';
+//   }
 // buttonsArea.appendChild(startbutton);
 
 // // Swap Cards Button
@@ -614,6 +660,8 @@ btn.addEventListener('click', () => {
 
 //     cardPiece.appendChild(cardElem);
 //   }
+// instruction.innerText = '4. Click `Submit` to see your new credit balance.';
+// mode = 'submit';
 // };
 // buttonsArea.appendChild(swapbutton);
 
@@ -622,12 +670,17 @@ const submitbutton = document.createElement('button');
 submitbutton.innerText = 'SUBMIT';
 
 // submitbutton.type = "submit"
-submitbutton.onclick = function () {
-  // sorting(hand);
-  // console.log(`hand submitted`, hand)
-  let displayBal = document.getElementById('wallet');
-  let updateBalance = evaluateEarnings(hand);
-  displayBal.innerText = updateBalance;
+submitbutton.onclick = () => {
+  if (mode === 'submit') {
+    // sorting(hand);
+    // console.log(`hand submitted`, hand)
+    let displayBal = document.getElementById('wallet');
+    let updateBalance = evaluateEarnings(hand);
+    displayBal.innerText = updateBalance;
+    instruction.innerText =
+      '5. Click `Replay` to clear the cards and play again.';
+    mode = 'replay';
+  }
 };
 buttonsArea.appendChild(submitbutton);
 
@@ -636,17 +689,25 @@ const replaybutton = document.createElement('button');
 replaybutton.innerText = 'Replay';
 
 // replaybutton.type = "replay"
-replaybutton.onclick = function () {
-  console.log('replay');
-  document.querySelector('#cardsTable').innerHTML = '';
-  layCardsCover();
-  //reinitialise all globals except credits
-  deck = shuffleCards(makeDeck());
-  hand = [];
-  cardNameTally = {};
-  cardSuitTally = {};
-  allCards = ['1', '1', '1', '1', '1'];
-  holdAray = [];
+replaybutton.onclick = () => {
+  if (mode === 'replay') {
+    console.log('replay');
+    document.querySelector('#cardsTable').innerHTML = '';
+    layCardsCover();
+    //reinitialise all globals except credits
+    deck = shuffleCards(makeDeck());
+    hand = [];
+    cardNameTally = {};
+    cardSuitTally = {};
+    allCards = ['1', '1', '1', '1', '1'];
+    holdAray = [];
+    document.getElementById('betStandard').style.background = 'goldenrod';
+    document.getElementById('betPower').style.background = 'goldenrod';
+    document.getElementById('betDouble').style.background = 'goldenrod';
+    instruction.innerText =
+      '1. Click on the bet (`Standard` or `Power Up` or `Double`) you want to play';
+    mode = 'choose bet';
+  }
 };
 buttonsArea.appendChild(replaybutton);
 
@@ -674,81 +735,89 @@ const createCard = (cardInfo) => {
 // Function to display the created card //
 let table = document.getElementById('cardsTable');
 const startClick = () => {
-  document.querySelector('#cardsTable').innerHTML = '';
-  let container = document.createElement('div');
-  container.classList.add('card-container');
-  container.setAttribute('id', 'cards-container');
-  table.appendChild(container);
-  for (i = 0; i < allCards.length; i++) {
-    hand.push(deck.pop());
-    // display each card
-    let cardPiece = createCard(hand[i]);
-    container.appendChild(cardPiece);
-    // liam elem ID creation step 2
-    // assign an ID to each of the items (ie. the cards)
-    let cardElem = document.createElement('div');
-    cardElem.id = `cardElem${i}`;
-    cardElem.setAttribute('data-hold', 0);
-    console.log(`cardPiece`, `cardPiece${i}`);
+  if (mode === 'start') {
+    document.querySelector('#cardsTable').innerHTML = '';
+    let container = document.createElement('div');
+    container.classList.add('card-container');
+    container.setAttribute('id', 'cards-container');
+    table.appendChild(container);
+    for (i = 0; i < allCards.length; i++) {
+      hand.push(deck.pop());
+      // display each card
+      let cardPiece = createCard(hand[i]);
+      container.appendChild(cardPiece);
+      // liam elem ID creation step 2
+      // assign an ID to each of the items (ie. the cards)
+      let cardElem = document.createElement('div');
+      cardElem.id = `cardElem${i}`;
+      cardElem.setAttribute('data-hold', 0);
+      console.log(`cardPiece`, `cardPiece${i}`);
 
-    cardPiece.appendChild(cardElem);
-    console.log(
-      `document cardElem id`,
-      document.getElementById(`cardElem${i}`)
-    );
-    // add eventListener to each card
-    cardPiece.addEventListener('click', () => {
-      console.log(`cardElem`, cardElem);
-      let holdStatus = cardElem.getAttribute(`data-hold`);
-      // update hold status each time the card is clicked
-      if (holdStatus === '0') {
-        holdStatus = 1;
-        cardElem.innerText = 'hold';
-        cardElem.setAttribute('data-hold', holdStatus);
-        holdAray.push(holdStatus);
-      }
-      if (holdStatus === '1') {
-        holdStatus = 0;
-        cardElem.innerText = '';
-        cardElem.setAttribute('data-hold', holdStatus);
+      cardPiece.appendChild(cardElem);
+      console.log(
+        `document cardElem id`,
+        document.getElementById(`cardElem${i}`)
+      );
+      // add eventListener to each card
+      cardPiece.addEventListener('click', () => {
+        console.log(`cardElem`, cardElem);
+        let holdStatus = cardElem.getAttribute(`data-hold`);
+        // update hold status each time the card is clicked
+        if (holdStatus === '0') {
+          holdStatus = 1;
+          cardElem.innerText = 'hold';
+          cardElem.setAttribute('data-hold', holdStatus);
+          holdAray.push(holdStatus);
+        }
+        if (holdStatus === '1') {
+          holdStatus = 0;
+          cardElem.innerText = '';
+          cardElem.setAttribute('data-hold', holdStatus);
 
-        holdAray.push(holdStatus);
-      }
-      console.log(`ddddd`, holdStatus);
-    });
+          holdAray.push(holdStatus);
+        }
+        console.log(`ddddd`, holdStatus);
+      });
+    }
   }
   console.log(`hand created`, hand);
+  instruction.innerText =
+    'Click on the cards to hold. To change your mind, click again on card that is on hold. When done, click again on the `Deal` button.';
   mode = 'swap';
 };
 
 // function to compare which cards were held and flip the unheld ones
 const swapCards = () => {
-  console.log('swap');
-  // first identify positions where status is changed
-  allCards = ['1', '1', '1', '1', '1'];
-  let priorSwapHoldArray = getHoldArray();
-  let diffArray = findDivergence(allCards, priorSwapHoldArray);
-  console.log(`index position to swap`, diffArray);
+  if (mode === 'swap') {
+    console.log('swap');
+    // first identify positions where status is changed
+    allCards = ['1', '1', '1', '1', '1'];
+    let priorSwapHoldArray = getHoldArray();
+    let diffArray = findDivergence(allCards, priorSwapHoldArray);
+    console.log(`index position to swap`, diffArray);
 
-  // draw new cards to replace in DOM element
-  diffArray.forEach((element) => {
-    let newCardObj = deck.pop();
-    hand.splice(element, 1, newCardObj);
-  });
-  // clear everything
-  let container = document.querySelector('#cards-container');
-  container.innerHTML = '';
-  // reattached the hand with swap cards
-  for (i = 0; i < hand.length; i++) {
-    // display each card
-    let cardPiece = createCard(hand[i]);
-    container.appendChild(cardPiece);
-    let cardElem = document.createElement('div');
-    cardElem.id = `cardElem${i}`;
-    cardElem.setAttribute('data-hold', 0);
-    console.log(`cardPiece`, `cardPiece${i}`);
-    cardPiece.appendChild(cardElem);
+    // draw new cards to replace in DOM element
+    diffArray.forEach((element) => {
+      let newCardObj = deck.pop();
+      hand.splice(element, 1, newCardObj);
+    });
+    // clear everything
+    let container = document.querySelector('#cards-container');
+    container.innerHTML = '';
+    // reattached the hand with swap cards
+    for (i = 0; i < hand.length; i++) {
+      // display each card
+      let cardPiece = createCard(hand[i]);
+      container.appendChild(cardPiece);
+      let cardElem = document.createElement('div');
+      cardElem.id = `cardElem${i}`;
+      cardElem.setAttribute('data-hold', 0);
+      console.log(`cardPiece`, `cardPiece${i}`);
+      cardPiece.appendChild(cardElem);
+    }
   }
+  instruction.innerText = 'Click `Submit` to see your new credit balance.';
+  mode = 'submit';
 };
 
 // // function to clear the cards on display and reinitialise some globals
@@ -889,6 +958,7 @@ const evaluateEarnings = (hand) => {
     console.log(`loss`, credits);
     if (credits < 0) {
       credits = 'Game Over';
+      mode = 'game over';
       return credits;
     } else {
       console.log(`positive loss`, credits);
