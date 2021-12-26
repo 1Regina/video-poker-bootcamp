@@ -29,6 +29,7 @@ let threeOfAKind = false;
 let twoPair = false;
 let onePair = false;
 // let highCard = false; unless duel
+let mode = 'choose bet';
 let credits = 10;
 // default initial hold status of cards
 let allCards = ['1', '1', '1', '1', '1'];
@@ -530,30 +531,38 @@ const testingAll = () => {
 
 const betStandardButton = document.querySelector('#betStandard');
 betStandardButton.onclick = () => {
-  earnings = betStandard;
-  document.getElementById('betStandard').style.background = 'red';
-   document.getElementById('betPower').style.background = 'goldrod';
-   document.getElementById('betDouble').style.background = 'goldenrod';
-
-  return earnings;
+  if (mode === 'choose bet') {
+    earnings = betStandard;
+    document.getElementById('betStandard').style.background = 'red';
+    document.getElementById('betPower').style.background = 'goldenrod';
+    document.getElementById('betDouble').style.background = 'goldenrod';
+    mode = 'start';
+    return earnings;
+  }
 };
 
 const betPowerdButton = document.querySelector('#betPower');
 betPowerdButton.onclick = () => {
-  earnings = betPower;
-  document.getElementById('betStandard').style.background = 'goldenrod';
-  document.getElementById('betPower').style.background = 'red';
-  document.getElementById('betDouble').style.background = 'goldenrod';
-  return earnings;
+  if (mode === 'choose bet') {
+    earnings = betPower;
+    document.getElementById('betStandard').style.background = 'goldenrod';
+    document.getElementById('betPower').style.background = 'red';
+    document.getElementById('betDouble').style.background = 'goldenrod';
+    mode = 'start';
+    return earnings;
+  }
 };
 
 const betDoubleButton = document.querySelector('#betDouble');
 betDoubleButton.onclick = () => {
-  earnings = betDouble;
-  document.getElementById('betStandard').style.background = 'goldenrod';
-  document.getElementById('betPower').style.background = 'goldenrod';
-  document.getElementById('betDouble').style.background = 'red';
-  return earnings;
+  if (mode === 'choose bet') {
+    earnings = betDouble;
+    document.getElementById('betStandard').style.background = 'goldenrod';
+    document.getElementById('betPower').style.background = 'goldenrod';
+    document.getElementById('betDouble').style.background = 'red';
+    mode = 'start';
+    return earnings;
+  }
 };
 const buttonsArea = document.getElementById('choose');
 // Start Game Button
@@ -562,7 +571,10 @@ startbutton.innerText = 'Start';
 
 // startbutton.type = "start"
 startbutton.onclick = () => {
-  startClick();
+  if (mode === 'start') {
+    startClick();
+  }
+  mode = 'swap';
 };
 buttonsArea.appendChild(startbutton);
 
@@ -572,33 +584,36 @@ swapbutton.innerText = 'Swap';
 
 // swapbutton.type = "swap"
 swapbutton.onclick = function () {
-  console.log('swap');
-  // first identify positions where status is changed
-  allCards = ['1', '1', '1', '1', '1'];
-  let priorSwapHoldArray = getHoldArray();
-  let diffArray = findDivergence(allCards, priorSwapHoldArray);
-  console.log(`index position to swap`, diffArray);
+  if (mode === 'swap') {
+    console.log('swap');
+    // first identify positions where status is changed
+    allCards = ['1', '1', '1', '1', '1'];
+    let priorSwapHoldArray = getHoldArray();
+    let diffArray = findDivergence(allCards, priorSwapHoldArray);
+    console.log(`index position to swap`, diffArray);
 
-  // draw new cards to replace in DOM element
-  diffArray.forEach((element) => {
-    let newCardObj = deck.pop();
-    hand.splice(element, 1, newCardObj);
-  });
-  // clear everything
-  let container = document.querySelector('#cards-container');
-  container.innerHTML = '';
-  // reattached the hand with swap cards
-  for (i = 0; i < hand.length; i++) {
-    // display each card
-    let cardPiece = createCard(hand[i]);
-    container.appendChild(cardPiece);
-    let cardElem = document.createElement('div');
-    cardElem.id = `cardElem${i}`;
-    cardElem.setAttribute('data-hold', 0);
-    console.log(`cardPiece`, `cardPiece${i}`);
+    // draw new cards to replace in DOM element
+    diffArray.forEach((element) => {
+      let newCardObj = deck.pop();
+      hand.splice(element, 1, newCardObj);
+    });
+    // clear everything
+    let container = document.querySelector('#cards-container');
+    container.innerHTML = '';
+    // reattached the hand with swap cards
+    for (i = 0; i < hand.length; i++) {
+      // display each card
+      let cardPiece = createCard(hand[i]);
+      container.appendChild(cardPiece);
+      let cardElem = document.createElement('div');
+      cardElem.id = `cardElem${i}`;
+      cardElem.setAttribute('data-hold', 0);
+      console.log(`cardPiece`, `cardPiece${i}`);
 
-    cardPiece.appendChild(cardElem);
+      cardPiece.appendChild(cardElem);
+    }
   }
+  mode = 'submit';
 };
 buttonsArea.appendChild(swapbutton);
 
@@ -608,11 +623,14 @@ submitbutton.innerText = 'Submit';
 
 // submitbutton.type = "submit"
 submitbutton.onclick = function () {
-  // sorting(hand);
-  // console.log(`hand submitted`, hand)
-  let displayBal = document.getElementById('wallet');
-  let updateBalance = evaluateEarnings(hand);
-  displayBal.innerText = updateBalance;
+  if (mode === 'submit') {
+    // sorting(hand);
+    // console.log(`hand submitted`, hand)
+    let displayBal = document.getElementById('wallet');
+    let updateBalance = evaluateEarnings(hand);
+    displayBal.innerText = updateBalance;
+  }
+  mode = 'replay';
 };
 buttonsArea.appendChild(submitbutton);
 
@@ -622,16 +640,22 @@ replaybutton.innerText = 'Replay';
 
 // replaybutton.type = "replay"
 replaybutton.onclick = function () {
-  console.log('replay');
-  document.querySelector('#cardsTable').innerHTML = '';
-  layCardsCover();
-  //reinitialise all globals except credits
-  deck = shuffleCards(makeDeck());
-  hand = [];
-  cardNameTally = {};
-  cardSuitTally = {};
-  allCards = ['1', '1', '1', '1', '1'];
-  holdAray = [];
+  if (mode === 'replay') {
+    console.log('replay');
+    document.querySelector('#cardsTable').innerHTML = '';
+    layCardsCover();
+    //reinitialise all globals except credits
+    deck = shuffleCards(makeDeck());
+    hand = [];
+    cardNameTally = {};
+    cardSuitTally = {};
+    allCards = ['1', '1', '1', '1', '1'];
+    holdAray = [];
+    document.getElementById('betStandard').style.background = 'goldenrod';
+    document.getElementById('betPower').style.background = 'goldenrod';
+    document.getElementById('betDouble').style.background = 'goldenrod';
+    mode = 'choose bet';
+  }
 };
 buttonsArea.appendChild(replaybutton);
 
