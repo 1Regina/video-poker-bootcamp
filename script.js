@@ -685,7 +685,7 @@ replaybutton.innerText = 'Replay';
 
 // replaybutton.type = "replay"
 replaybutton.onclick = function () {
-  if (mode === 'replay') {
+  if (mode === 'replay' && credits >= 0) {
     console.log('replay');
     document.querySelector('#cardsTable').innerHTML = '';
     layCardsCover();
@@ -702,6 +702,10 @@ replaybutton.onclick = function () {
     instruction.innerText =
       '1. Click on the bet (`Standard` or `Power Up` or `Double`) you want to play';
     mode = 'choose bet';
+  }
+  if (mode === 'replay' && credits === 'Game Over') {
+    instruction.innerText = '6. Sorry your run out of credits. Refresh the browser to start over or pay me to get more credits';
+    mode = 'game over';
   }
 };
 buttonsArea.appendChild(replaybutton);
@@ -900,7 +904,7 @@ const evaluateEarnings = (hand) => {
     console.log(`loss`, credits);
     if (credits < 0) {
       credits = 'Game Over';
-      mode = 'game over';
+      // mode = 'game over';
       return credits;
     } else {
       console.log(`positive loss`, credits);
