@@ -12,6 +12,7 @@
   },
   "author": "",
   "license": "ISC",
+  "type": "module",
   "bugs": {
     "url": "https://github.com/rocketacademy/video-poker-swe1/issues"
   },
